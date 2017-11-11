@@ -1,0 +1,25 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'groovy'
+    id 'org.hidetake.swagger.generator' version "2.9.0"
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    compile 'io.swagger:swagger-annotations:1.5.15'
+    compile 'com.squareup.okhttp:okhttp:2.7.5'
+    compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile 'joda-time:joda-time:2.9.9'
+
+    testCompile(
+        "org.spockframework:spock-core:$spockVersion",
+    )
+}
+
+apply from: 'swagger-codegen.gradle'

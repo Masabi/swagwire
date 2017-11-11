@@ -1,0 +1,37 @@
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    swaggerCodegen(
+        "io.swagger:swagger-codegen-cli:$swaggerCliVersion",
+        "com.github.tddmonkey:swerver:+"
+    )
+}
+
+swaggerSources {
+    petstore {
+        inputFile = file('src/main/resources/petstore.json')
+        code {
+            language = 'java'
+//            language = 'com.github.tddmonkey.swerver.SwerverCodegen'
+//            templateDir = file('../swerver-codegen/src/main/resources/templates/swerver')
+        }
+    }
+
+//    /*
+    petstoreTest {
+        inputFile = file('src/main/resources/petstore.json')
+        code {
+            language = 'swerver'
+            outputDir = file("$buildDir/swagger-test-code")
+//            library = 'swerver'
+//            language = 'com.github.tddmonkey.swerver.SwerverCodegen'
+        }
+    }
+}
+
+compileJava.dependsOn swaggerSources.petstore.code
+sourceSets.main.java.srcDir "${swaggerSources.petstore.code.outputDir.path}/src/main/java"
+sourceSets.test.java.srcDir "${swaggerSources.petstoreTest.code.outputDir.path}/src/main/java"

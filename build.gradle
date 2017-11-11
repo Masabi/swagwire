@@ -1,0 +1,34 @@
+plugins {
+	id 'idea'
+	id 'java'
+	id 'groovy'
+}
+
+group = "com.github.tddmonkey"
+version "0.0.3-SNAPSHOT"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+[compileJava, compileTestJava]*.options*.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	compile (
+		"io.swagger:swagger-codegen-cli:$swaggerCliVersion",
+	)
+
+	testCompile(
+		"org.spockframework:spock-core:$spockVersion",
+	)
+}
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+}
+
+apply from: 'package.gradle'
