@@ -1,9 +1,6 @@
 {{>licenseInfo}}
 package {{package}};
 
-/**
- * HELLO
- */
 import {{modelPackage}}.*;
 
 {{#imports}}import {{import}};
@@ -51,17 +48,25 @@ import {{modelPackage}}.*;
         {{/externalDocs}}
         */
         public {{#returnType}}{{{returnType}}} {{/returnType}}{{^returnType}}void {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
-/*        Object {{localVariablePrefix}}localVarPostBody = {{#bodyParam}}{{paramName}}{{/bodyParam}}{{^bodyParam}}null{{/bodyParam}};
+        Object {{localVariablePrefix}}localVarPostBody = {{#bodyParam}}{{paramName}}{{/bodyParam}}{{^bodyParam}}null{{/bodyParam}};
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
             if ({{paramName}} == null) {
-            throw new ApiException(400, "Missing the required parameter '{{paramName}}' when calling {{operationId}}");
+            throw new IllegalArgumentException("Missing the required parameter '{{paramName}}' when calling {{operationId}}");
             }
         {{/required}}{{/allParams}}
         // create path and map variables
-        String {{localVariablePrefix}}localVarPath = "{{{path}}}"{{#pathParams}}
-            .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}apiClient.escapeString({{{paramName}}}.toString())){{/pathParams}};
 
+
+        String {{localVariablePrefix}}localVarPath = "{{{path}}}"{{#pathParams}}
+            .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}escapeString({{{paramName}}}.toString())){{/pathParams}};
+
+        final String[] {{localVariablePrefix}}localVarAccepts = {
+            {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}}
+        };
+        final String {{localVariablePrefix}}localVarAccept = {{localVariablePrefix}}selectHeaderAccept({{localVariablePrefix}}localVarAccepts);
+
+/*
         // query params
         {{javaUtilPrefix}}List<Pair> {{localVariablePrefix}}localVarQueryParams = new {{javaUtilPrefix}}ArrayList<Pair>();
         {{javaUtilPrefix}}List<Pair> {{localVariablePrefix}}localVarCollectionQueryParams = new {{javaUtilPrefix}}ArrayList<Pair>();
@@ -80,10 +85,6 @@ import {{modelPackage}}.*;
         {{localVariablePrefix}}localVarFormParams.put("{{baseName}}", {{paramName}});
         {{/formParams}}
 
-            final String[] {{localVariablePrefix}}localVarAccepts = {
-        {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}}
-            };
-            final String {{localVariablePrefix}}localVarAccept = {{localVariablePrefix}}apiClient.selectHeaderAccept({{localVariablePrefix}}localVarAccepts);
 
             final String[] {{localVariablePrefix}}localVarContentTypes = {
         {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}}
@@ -105,4 +106,46 @@ import {{modelPackage}}.*;
             }
     {{/operation}}
         }
+
+       /**
+         * TODO should be shared somewhere and can be static
+         */
+        public static String escapeString(String str) {
+            try {
+                return java.net.URLEncoder.encode(str, "utf8").replaceAll("\\+", "%20");
+            } catch (java.io.UnsupportedEncodingException e) {
+                return str;
+            }
+        }
+
+        public static String selectHeaderAccept(String[] accepts) {
+            if (accepts.length == 0) {
+                return null;
+            }
+            for (String accept : accepts) {
+                if (isJsonMime(accept)) {
+                    return accept;
+                }
+            }
+            return join(accepts, ",");
+        }
+
+        public static boolean isJsonMime(String mime) {
+            String jsonMime = "(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$";
+            return mime != null && (mime.matches(jsonMime) || mime.equalsIgnoreCase("application/json-patch+json"));
+        }
+
+          public static String join(String[] array, String separator) {
+            int len = array.length;
+            if (len == 0) return "";
+
+            StringBuilder out = new StringBuilder();
+            out.append(array[0]);
+            for (int i = 1; i < len; i++) {
+              out.append(separator).append(array[i]);
+            }
+            return out.toString();
+          }
+
+
 {{/operations}}
