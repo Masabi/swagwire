@@ -100,7 +100,14 @@ import {{modelPackage}}.*;
             {{localVariablePrefix}}apiClient.invokeAPI({{localVariablePrefix}}localVarPath, "{{httpMethod}}", {{localVariablePrefix}}localVarQueryParams, {{localVariablePrefix}}localVarCollectionQueryParams, {{localVariablePrefix}}localVarPostBody, {{localVariablePrefix}}localVarHeaderParams, {{localVariablePrefix}}localVarFormParams, {{localVariablePrefix}}localVarAccept, {{localVariablePrefix}}localVarContentType, {{localVariablePrefix}}localVarAuthNames, null);
         {{/returnType}}*/
                     {{#returnType}}
-                        return null;
+
+
+            /**
+             * This is probably going to be different depending on the operation being done -
+             * maybe use the HTTP verb to figure it out
+             */
+            com.github.tomakehurst.wiremock.client.MappingBuilder mappingBuilder = WireMock.get(WireMock.urlEqualTo(localVarPath));
+            return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
         {{/returnType}}
 
             }
