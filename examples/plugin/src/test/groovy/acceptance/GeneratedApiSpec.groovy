@@ -16,24 +16,28 @@ class GeneratedApiSpec extends Specification {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
 
-    private String basePath
     private PetApi petApi
+    private RemotelyMockedPetApi remotePetApi = new RemotelyMockedPetApi()
 
     def setup() {
-        ApiClient client = new ApiClient()
-        basePath = "http://localhost:${wireMockRule.port()}"
-        client.setBasePath(basePath)
-        petApi = new PetApi(client)
+        String basePath = "http://localhost:${wireMockRule.port()}"
+        petApi = new PetApi(new ApiClient().setBasePath(basePath))
     }
 
-    def "can make a simple GET call"() {
+    def "can GET a single object"() {
         given:
-            RemotelyMockedPetApi remotePetApi = new RemotelyMockedPetApi()
             RemotelyMockedPet pet1 = new RemotelyMockedPet().id(1L)
-            RemotelyMockedPet pet2 = new RemotelyMockedPet().id(2L)
-
-            // The response should be an interface to keep the DSL clean
             remotePetApi.getPetById(1L).respondsWith(pet1)
+
+        expect:
+            petApi.getPetById(1L).id == 1L
+
+    }
+
+    def "can DELETE a single object"() {
+        given:
+            // The response should be an interface to keep the DSL clean
+            remotePetApi.(1L).respondsWith(pet1)
             remotePetApi.getPetById(2L).respondsWith(pet2)
 
         expect:
