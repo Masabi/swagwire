@@ -2,6 +2,7 @@
 package {{package}};
 
 import {{modelPackage}}.*;
+import {{invokerPackage}}.*;
 
 {{#imports}}import {{import}};
 {{/imports}}
@@ -13,6 +14,9 @@ import {{modelPackage}}.*;
     import java.util.List;
     import java.util.Map;
 {{/fullJavaUtil}}
+
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import com.github.tomakehurst.wiremock.client.WireMock;
 
 {{>generatedAnnotation}}
 {{#operations}}
@@ -47,7 +51,7 @@ import {{modelPackage}}.*;
             * @see <a href="{{url}}">{{summary}} Documentation</a>
         {{/externalDocs}}
         */
-        public {{#returnType}}{{{returnType}}} {{/returnType}}{{^returnType}}void {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
+        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}void {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
         Object {{localVariablePrefix}}localVarPostBody = {{#bodyParam}}{{paramName}}{{/bodyParam}}{{^bodyParam}}null{{/bodyParam}};
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
@@ -64,9 +68,9 @@ import {{modelPackage}}.*;
         final String[] {{localVariablePrefix}}localVarAccepts = {
             {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}}
         };
+/*
         final String {{localVariablePrefix}}localVarAccept = {{localVariablePrefix}}selectHeaderAccept({{localVariablePrefix}}localVarAccepts);
 
-/*
         // query params
         {{javaUtilPrefix}}List<Pair> {{localVariablePrefix}}localVarQueryParams = new {{javaUtilPrefix}}ArrayList<Pair>();
         {{javaUtilPrefix}}List<Pair> {{localVariablePrefix}}localVarCollectionQueryParams = new {{javaUtilPrefix}}ArrayList<Pair>();
@@ -101,12 +105,18 @@ import {{modelPackage}}.*;
         {{/returnType}}*/
                     {{#returnType}}
 
+        // TODO this only works for Json right now - to do something else we need
+        // to handle the serialization further down
+
+        // These are inverted from the normal generation meaning as when programming
+        // wiremock we're doing the inverse
+        final String contentType = selectHeaderAccept(localVarAccepts);
 
             /**
              * This is probably going to be different depending on the operation being done -
              * maybe use the HTTP verb to figure it out
              */
-            com.github.tomakehurst.wiremock.client.MappingBuilder mappingBuilder = WireMock.get(WireMock.urlEqualTo(localVarPath));
+            MappingBuilder mappingBuilder = WireMock.get(WireMock.urlEqualTo(localVarPath));
             return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
         {{/returnType}}
 

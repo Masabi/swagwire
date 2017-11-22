@@ -1,4 +1,4 @@
-package acceptance.tobegenerated;
+package {{invokerPackage}};
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -21,15 +21,6 @@ public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
                 .withHeader("Content-Type", contentType)
                 .withBody(bodyFor(object))
         ));
-    }
-
-    @Override
-    public void succeeds() {
-        WireMock.stubFor(mappingBuilder.willReturn(
-                WireMock.aResponse()
-                        .withStatus(200)
-        ));
-
     }
 
     /**

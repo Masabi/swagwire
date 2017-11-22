@@ -2,7 +2,6 @@ package acceptance.tobegenerated;
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
-import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import io.swagger.client.StringUtil;
 import io.swagger.client.model.RemotelyMockedPet;
 
@@ -55,5 +54,22 @@ public class RemotelyMockedPetApi {
     public static boolean isJsonMime(String mime) {
         String jsonMime = "(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$";
         return mime != null && (mime.matches(jsonMime) || mime.equalsIgnoreCase("application/json-patch+json"));
+    }
+
+    public RemoteOperation<Void> deletePet(Long petId, String apiKey) {
+        String localVarPath = "/pet/{petId}"
+                .replaceAll("\\{" + "petId" + "\\}", escapeString(petId.toString()));
+
+//        if (apiKey != null)
+//            localVarHeaderParams.put("api_key", apiClient.parameterToString(apiKey));
+
+        final String[] localVarAccepts = {
+                "application/json", "application/xml"
+        };
+        final String contentType = selectHeaderAccept(localVarAccepts);
+
+        MappingBuilder mappingBuilder = WireMock.request("DELETE", WireMock.urlEqualTo(localVarPath));
+        mappingBuilder.withHeader("api_key", WireMock.equalTo(apiKey));
+        return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
     }
 }

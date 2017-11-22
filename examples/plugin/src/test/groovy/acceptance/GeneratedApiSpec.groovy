@@ -1,11 +1,10 @@
 package acceptance
 
 import acceptance.tobegenerated.RemotelyMockedPetApi
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import io.swagger.client.ApiClient
 import io.swagger.client.api.PetApi
-import io.swagger.client.model.Pet
+//import io.swagger.client.api.RemotelyMockedPetApi
 import io.swagger.client.model.RemotelyMockedPet
 import org.junit.Rule
 import spock.lang.Specification
@@ -31,18 +30,13 @@ class GeneratedApiSpec extends Specification {
 
         expect:
             petApi.getPetById(1L).id == 1L
-
     }
 
     def "can DELETE a single object"() {
         given:
-            // The response should be an interface to keep the DSL clean
-            remotePetApi.(1L).respondsWith(pet1)
-            remotePetApi.getPetById(2L).respondsWith(pet2)
-
+            remotePetApi.deletePet(1L, "api-key").succeeds()
+        
         expect:
-            petApi.getPetById(1L).id == 1L
-            petApi.getPetById(2L).id == 2L
-
+            petApi.deletePet(1L, "api-key")
     }
 }

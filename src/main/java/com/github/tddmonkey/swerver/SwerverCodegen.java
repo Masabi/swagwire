@@ -62,6 +62,10 @@ public class SwerverCodegen extends JavaClientCodegen {
             this.supportingFiles.clear();
 //            setLibrary("swerver");
             this.apiTestTemplateFiles.clear();
+        String invokerFolder = (this.sourceFolder + '/' + this.invokerPackage).replace(".", "/");
+
+        this.supportingFiles.add(new SupportingFile("apiresponse.mustache", invokerFolder, "RemoteOperation.java"));
+        this.supportingFiles.add(new SupportingFile("wiremock_api_response.mustache", invokerFolder, "WireMockedRemoteOperation.java"));
             this.apiTemplateFiles.entrySet().forEach(e -> {
                 System.out.println("Api template file " + e.getKey() + " -  " + e.getValue());
             });
