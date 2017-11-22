@@ -28,20 +28,17 @@ class GeneratedApiSpec extends Specification {
 
     def "can make a simple GET call"() {
         given:
-            String endpoint = basePath
-//            PetsTestApi api = new PetsTestApi(endpoint)
             RemotelyMockedPetApi remotePetApi = new RemotelyMockedPetApi()
-            RemotelyMockedPet remotePet = new RemotelyMockedPet()
-            remotePet.id(1234L)
+            RemotelyMockedPet pet1 = new RemotelyMockedPet().id(1L)
+            RemotelyMockedPet pet2 = new RemotelyMockedPet().id(2L)
 
             // The response should be an interface to keep the DSL clean
-            remotePetApi.getPetById(1234L).respondsWith(remotePet)
-        
-        when:
-            Pet actualPet = petApi.getPetById(1234)
+            remotePetApi.getPetById(1L).respondsWith(pet1)
+            remotePetApi.getPetById(2L).respondsWith(pet2)
 
-        then:
-            actualPet.id == 1234L
+        expect:
+            petApi.getPetById(1L).id == 1L
+            petApi.getPetById(2L).id == 2L
 
     }
 }

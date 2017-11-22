@@ -6,11 +6,12 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.google.gson.Gson;
 
 public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
-    private StubMapping stubMapping;
     private MappingBuilder mappingBuilder;
+    private String contentType;
 
-    public WireMockedRemoteOperation(MappingBuilder mappingBuilder) {
+    public WireMockedRemoteOperation(MappingBuilder mappingBuilder, String contentType) {
         this.mappingBuilder = mappingBuilder;
+        this.contentType = contentType;
     }
 
     @Override
@@ -18,8 +19,16 @@ public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
         WireMock.stubFor(mappingBuilder.willReturn(
             WireMock.aResponse()
                 .withStatus(200)
-                .withHeader("Content-Type", "application/json")
-                .withBody(new Gson().toJson(object))
+                .withHeader("Content-Type", contentType)
+                .withBody(bodyFor(object))
         ));
+    }
+
+    /**
+     * This is currently hardcoded to doing just json right now - as the need
+     * arises this should change to handle correctly content negotiation
+     */
+    private String bodyFor(TYPE object) {
+        return new Gson().toJson(object);
     }
 }
