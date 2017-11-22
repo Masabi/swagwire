@@ -1,15 +1,16 @@
 package com.github.tddmonkey.swerver;
 
-import io.swagger.codegen.CliOption;
-import io.swagger.codegen.CodegenConfig;
-import io.swagger.codegen.CodegenType;
-import io.swagger.codegen.DefaultCodegen;
+import io.swagger.codegen.*;
 import io.swagger.codegen.languages.AbstractJavaCodegen;
 import io.swagger.codegen.languages.JavaClientCodegen;
+import io.swagger.models.Model;
+import io.swagger.models.Operation;
+import io.swagger.models.Swagger;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class SwerverCodegen extends JavaClientCodegen {
@@ -41,16 +42,25 @@ public class SwerverCodegen extends JavaClientCodegen {
         return CodegenType.OTHER;
     }
 
+    @Override
+    public String toApiName(String name) {
+        return "RemotelyMocked" + super.toApiName(name);
+    }
 
+    @Override
+    public String toModelName(String name) {
+        return "RemotelyMocked" + super.toModelName(name);
+    }
 
     @Override
     public void processOpts() {
+        super.processOpts();
 //        super.processOpts();
 //        if ("swerver".equals(this.getLibrary())) {
             System.out.println("USING SWERVER CONFIG for " + getInputSpec());
 //            this.templateDir = "templates/";
             this.supportingFiles.clear();
-            setLibrary("swerver");
+//            setLibrary("swerver");
             this.apiTestTemplateFiles.clear();
             this.apiTemplateFiles.entrySet().forEach(e -> {
                 System.out.println("Api template file " + e.getKey() + " -  " + e.getValue());
@@ -76,6 +86,15 @@ public class SwerverCodegen extends JavaClientCodegen {
 //        setTemplateDir("/Users/colin/src/personal/swerver/templates/");
 //        System.out.println("Templates is " + file);
     }
+
+    @Override
+    public CodegenOperation fromOperation(String path, String httpMethod, Operation operation, Map<String, Model> definitions, Swagger swagger) {
+        System.out.println("Operation is " + path);
+        System.out.println("Operation is " + operation.getTags());
+        return super.fromOperation(path, httpMethod, operation, definitions, swagger);
+    }
+
+    /** dont think we need any of this down here **/
 
     public String getFullTemplateFile(CodegenConfig config, String templateFile) {
         //1st the code will check if there's a <template folder>/libraries/<library> folder containing the file

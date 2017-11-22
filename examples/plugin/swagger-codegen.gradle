@@ -15,8 +15,11 @@ swaggerSources {
         inputFile = file('src/main/resources/petstore.json')
         code {
             language = 'java'
-//            language = 'com.github.tddmonkey.swerver.SwerverCodegen'
-//            templateDir = file('../swerver-codegen/src/main/resources/templates/swerver')
+            library = 'jersey2'
+            additionalProperties = [
+                java8Mode: true,
+                dateLibrary: 'java8'
+            ]
         }
     }
 
@@ -26,8 +29,9 @@ swaggerSources {
         code {
             language = 'swerver'
             outputDir = file("$buildDir/swagger-test-code")
-//            library = 'swerver'
-//            language = 'com.github.tddmonkey.swerver.SwerverCodegen'
+            additionalProperties = [
+                dateLibrary: 'java8'
+            ]
         }
     }
 }

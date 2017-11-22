@@ -11,14 +11,32 @@ repositories {
 }
 
 dependencies {
-    compile 'io.swagger:swagger-annotations:1.5.15'
-    compile 'com.squareup.okhttp:okhttp:2.7.5'
-    compile 'com.squareup.okhttp:logging-interceptor:2.7.5'
-    compile 'com.google.code.gson:gson:2.8.1'
-    compile 'joda-time:joda-time:2.9.9'
+    
+    // generated client deps
+    compile(
+        "io.swagger:swagger-annotations:$swaggerVersion",
+        "org.glassfish.jersey.core:jersey-client:$jerseyVersion",
+        "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion",
+        "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion",
+        "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
+//        "com.brsanthu:migbase64:$migVersion",
+    )
 
     testCompile(
+        "io.swagger:swagger-annotations:$swaggerVersion",
         "org.spockframework:spock-core:$spockVersion",
+    )
+    
+    // test client deps
+    testCompile(
+        "com.github.tomakehurst:wiremock:$wiremockVersion"
+    )
+    
+    // TODO not sure if this will be the thing finally used or not - seems it would be better to use
+    // whatever default mapping system the codegen would use - but does this really matter - it should
+    // all be standard JSON anyway??
+    testCompile(
+        'com.google.code.gson:gson:2.8.2'
     )
 }
 
