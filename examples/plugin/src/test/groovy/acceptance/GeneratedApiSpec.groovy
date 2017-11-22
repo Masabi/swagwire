@@ -1,10 +1,10 @@
 package acceptance
 
-import acceptance.tobegenerated.RemotelyMockedPetApi
+//import acceptance.tobegenerated.RemotelyMockedPetApi
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import io.swagger.client.ApiClient
 import io.swagger.client.api.PetApi
-//import io.swagger.client.api.RemotelyMockedPetApi
+import io.swagger.client.api.RemotelyMockedPetApi
 import io.swagger.client.model.RemotelyMockedPet
 import org.junit.Rule
 import spock.lang.Specification

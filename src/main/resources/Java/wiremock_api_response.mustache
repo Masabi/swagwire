@@ -23,6 +23,15 @@ public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
         ));
     }
 
+    // TODO is this always a 200? Could we get it from the input spec?
+    @Override
+    public void succeeds() {
+        WireMock.stubFor(mappingBuilder.willReturn(
+            WireMock.aResponse()
+                .withStatus(200)
+        ));
+    }
+
     /**
      * This is currently hardcoded to doing just json right now - as the need
      * arises this should change to handle correctly content negotiation
