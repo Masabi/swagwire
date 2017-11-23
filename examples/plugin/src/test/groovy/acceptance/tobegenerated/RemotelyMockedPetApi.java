@@ -2,11 +2,14 @@ package acceptance.tobegenerated;
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.google.gson.Gson;
 import io.swagger.client.StringUtil;
 import io.swagger.client.model.RemotelyMockedPet;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+
+import static io.swagger.client.ApiUtils.selectHeaderAccept;
 
 public class RemotelyMockedPetApi {
     public RemoteOperation<RemotelyMockedPet> getPetById(Long petId) {
@@ -72,4 +75,63 @@ public class RemotelyMockedPetApi {
         mappingBuilder.withHeader("api_key", WireMock.equalTo(apiKey));
         return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
     }
+
+    public RemoteOperation<Void> addPet(RemotelyMockedPet body) {
+        Object localVarPostBody = body;
+
+        // create path and map variables
+
+
+        String localVarPath = "/pet";
+
+        final String[] localVarAccepts = {
+                "application/json", "application/xml"
+        };
+/*
+        final String localVarAccept = selectHeaderAccept(localVarAccepts);
+
+        // query params
+        List<Pair> localVarQueryParams = new ArrayList<Pair>();
+        List<Pair> localVarCollectionQueryParams = new ArrayList<Pair>();
+        Map<String, String> localVarHeaderParams = new HashMap<String, String>();
+        Map<String, Object> localVarFormParams = new HashMap<String, Object>();
+
+
+
+
+            final String[] localVarContentTypes = {
+        "application/json", "application/xml"
+            };
+            final String localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
+
+            String[] localVarAuthNames = new String[] { "petstore_auth" };
+
+            apiClient.invokeAPI(localVarPath, "POST", localVarQueryParams, localVarCollectionQueryParams, localVarPostBody, localVarHeaderParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, null);
+        */
+
+        // TODO this only works for Json right now - to do something else we need
+        // to handle the serialization further down
+
+        // These are inverted from the normal generation meaning as when programming
+        // wiremock we're doing the inverse
+        final String contentType = selectHeaderAccept(localVarAccepts);
+
+        /**
+         * This is probably going to be different depending on the operation being done -
+         * maybe use the HTTP verb to figure it out
+         */
+
+        // TODO Gson is putting the expected request enum as uppercase - the actual code is sending lowercase
+        // regardless of which is correct - can we handle it in a generic enough way?
+
+        // When instantiating the api class here we could have the ability to provide functionality to
+        // do the actual json serialization
+        // above means we actual want a builder with a default strategy.
+        MappingBuilder mappingBuilder = WireMock
+            .request("POST", WireMock.urlEqualTo(localVarPath))
+            .withRequestBody(WireMock.equalToJson(new Gson().toJson(body), false, false));
+
+        return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
+    }
+
 }
