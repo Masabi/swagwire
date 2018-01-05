@@ -10,7 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class SwerverCodegen extends JavaClientCodegen {
@@ -59,7 +61,13 @@ public class SwerverCodegen extends JavaClientCodegen {
 //        if ("swerver".equals(this.getLibrary())) {
             System.out.println("USING SWERVER CONFIG for " + getInputSpec());
 //            this.templateDir = "templates/";
-            this.supportingFiles.clear();
+        Set<String> templateFilesToKeep = new HashSet<String>() {{
+            add("JSON.mustache");
+        }};
+        this.supportingFiles.forEach(e -> {
+            System.out.println("Supporting file " + e.templateFile);
+        });
+        this.supportingFiles.removeIf(f -> !templateFilesToKeep.contains(f.templateFile));
 //            setLibrary("swerver");
             this.apiTestTemplateFiles.clear();
         String invokerFolder = (this.sourceFolder + '/' + this.invokerPackage).replace(".", "/");
@@ -67,6 +75,7 @@ public class SwerverCodegen extends JavaClientCodegen {
         this.supportingFiles.add(new SupportingFile("apiresponse.mustache", invokerFolder, "RemoteOperation.java"));
         this.supportingFiles.add(new SupportingFile("wiremock_api_response.mustache", invokerFolder, "WireMockedRemoteOperation.java"));
         this.supportingFiles.add(new SupportingFile("apiutils.mustache", invokerFolder, "ApiUtils.java"));
+        this.supportingFiles.add(new SupportingFile("enum_typeadapterfactory.mustache", invokerFolder, "EnumTypeAdapterFactory.java"));
             this.apiTemplateFiles.entrySet().forEach(e -> {
                 System.out.println("Api template file " + e.getKey() + " -  " + e.getValue());
             });

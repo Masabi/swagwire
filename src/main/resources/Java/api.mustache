@@ -8,6 +8,8 @@ import static {{invokerPackage}}.ApiUtils.*;
 {{#imports}}import {{import}};
 {{/imports}}
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 {{^fullJavaUtil}}
     import java.util.ArrayList;
@@ -115,9 +117,14 @@ import com.github.tomakehurst.wiremock.client.WireMock;
          */
         MappingBuilder mappingBuilder = WireMock.request("{{httpMethod}}", WireMock.urlEqualTo(localVarPath));
         {{#headerParams}}if ({{paramName}} != null) {
-            mappingBuilder.withHeader("{{baseName}}", WireMock.equalTo(parameterToString({{paramName}})));
+            mappingBuilder
+                .withHeader("{{baseName}}", WireMock.equalTo(parameterToString({{paramName}})));
         }
         {{/headerParams}}
+        {{#bodyParam}}
+            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new EnumTypeAdapterFactory()).create();
+            mappingBuilder.withRequestBody(WireMock.equalToJson(gson.toJson({{paramName}}), false, false));
+        {{/bodyParam}}
 
             return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
         }

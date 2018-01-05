@@ -29,13 +29,16 @@ dependencies {
     
     // test client deps
     testCompile(
-        "com.github.tomakehurst:wiremock:$wiremockVersion"
+        "com.github.tomakehurst:wiremock:$wiremockVersion",
+
     )
     
     // TODO not sure if this will be the thing finally used or not - seems it would be better to use
     // whatever default mapping system the codegen would use - but does this really matter - it should
     // all be standard JSON anyway??
     testCompile(
+//        "com.squareup.okhttp3:okhttp:3.9.1",
+//        "com.squareup.okhttp3:okio:3.9.1",
         'com.google.code.gson:gson:2.8.2'
     )
 }

@@ -3,6 +3,8 @@ package acceptance.tobegenerated;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import io.swagger.client.EnumTypeAdapterFactory;
 import io.swagger.client.StringUtil;
 import io.swagger.client.model.RemotelyMockedPet;
 
@@ -127,9 +129,10 @@ public class RemotelyMockedPetApi {
         // When instantiating the api class here we could have the ability to provide functionality to
         // do the actual json serialization
         // above means we actual want a builder with a default strategy.
+        Gson gson = new GsonBuilder().registerTypeAdapterFactory(new EnumTypeAdapterFactory()).create();
         MappingBuilder mappingBuilder = WireMock
             .request("POST", WireMock.urlEqualTo(localVarPath))
-            .withRequestBody(WireMock.equalToJson(new Gson().toJson(body), false, false));
+            .withRequestBody(WireMock.equalToJson(gson.toJson(body), false, false));
 
         return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
     }
