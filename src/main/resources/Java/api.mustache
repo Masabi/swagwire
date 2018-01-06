@@ -20,22 +20,29 @@ import com.google.gson.GsonBuilder;
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.matching.ContentPattern;
 
 {{>generatedAnnotation}}
 {{#operations}}
     public class {{classname}} {
-//    private ApiClient {{localVariablePrefix}}apiClient;
+        Gson gson;
 
-    public {{classname}}() {
-//    this(Configuration.getDefaultApiClient());
-//    this(Configuration.getDefaultApiClient());
-    }
+        public {{classname}}() {
+            this(new GsonBuilder().registerTypeAdapterFactory(new EnumTypeAdapterFactory()).create());
+        }
 
-//    public {{classname}}(ApiClient apiClient) {
-//    this.{{localVariablePrefix}}apiClient = apiClient;
-//    }
+        public {{classname}}(Gson gson) {
+            this.gson = gson;
+        }
 
     {{#operation}}
+        {{#bodyParam}}
+        // do the passthrough ere
+        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
+            return {{operationId}}({{#allParams}}{{^isBodyParam}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}WireMock.equalToJson(gson.toJson({{paramName}}), false, false));
+        }
+        {{/bodyParam}}
+
         /**
         * {{summary}}
         * {{notes}}
@@ -54,8 +61,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
             * @see <a href="{{url}}">{{summary}} Documentation</a>
         {{/externalDocs}}
         */
-        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
-        Object {{localVariablePrefix}}localVarPostBody = {{#bodyParam}}{{paramName}}{{/bodyParam}}{{^bodyParam}}null{{/bodyParam}};
+        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}{{#bodyParam}}ContentPattern<String> bodyMatcher{{/bodyParam}}) {
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
             if ({{paramName}} == null) {
@@ -122,8 +128,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
         }
         {{/headerParams}}
         {{#bodyParam}}
-            Gson gson = new GsonBuilder().registerTypeAdapterFactory(new EnumTypeAdapterFactory()).create();
-            mappingBuilder.withRequestBody(WireMock.equalToJson(gson.toJson({{paramName}}), false, false));
+            mappingBuilder.withRequestBody(bodyMatcher);
         {{/bodyParam}}
 
             return new WireMockedRemoteOperation<>(mappingBuilder, contentType);

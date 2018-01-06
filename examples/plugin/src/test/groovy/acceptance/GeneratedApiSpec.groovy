@@ -1,6 +1,7 @@
 package acceptance
 
 import acceptance.tobegenerated.RemotelyMockedPetApi
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 import io.swagger.client.ApiClient
 import io.swagger.client.api.PetApi
@@ -8,6 +9,7 @@ import io.swagger.client.model.Pet
 
 import io.swagger.client.api.RemotelyMockedPetApi
 import io.swagger.client.model.RemotelyMockedPet
+import io.swagger.client.model.RemotelyMockedTag
 import org.junit.Rule
 import spock.lang.PendingFeature
 import spock.lang.Specification
@@ -43,6 +45,13 @@ class GeneratedApiSpec extends Specification {
             petApi.deletePet(1L, "api-key")
     }
 
+
+    public static void main(String[] args) {
+        WireMock.stubFor(
+            WireMock.request("POST", WireMock.urlMatching("/pet/1"))
+                .willReturn(WireMock.aResponse().withBody('{"one":1}').withStatus(200)))
+    }
+
     // TODO this needs to verify the body - It's possible we need a whole set of tests for this
     def "can POST a new object with minimal information"() {
         given:
@@ -60,6 +69,17 @@ class GeneratedApiSpec extends Specification {
 //                .status(Pet.StatusEnum.AVAILABLE)
             petApi.addPet(newActualPet)
     }
+
+    def "can POST a new object against a WireMock matcher"() {
+        given:
+            remotePetApi.addPet(WireMock.matchingJsonPath('$[?(@.id == 634)]')).succeeds()
+
+        expect:
+            Pet newActualPet = new Pet()
+                .id(634L)
+            petApi.addPet(newActualPet)
+    }
+
 
     def "maintains enum casing when registering body matcher"() {
         given:
