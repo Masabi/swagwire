@@ -80,11 +80,8 @@ class GeneratedApiSpec extends Specification {
             petApi.addPet(newActualPet)
     }
 
-
-    def "maintains enum casing when registering body matcher"() {
+    def "maintains enum casing when not all uppercase"() {
         given:
-            // the problem here is that the enum is being registered as uppercase whereas it should
-            // be the case the library/spec expects it in - meaning we can't use raw Gson to do this
             RemotelyMockedPet newPet = new RemotelyMockedPet()
                 .id(635L)
                 .status(RemotelyMockedPet.StatusEnum.AVAILABLE)
@@ -96,6 +93,10 @@ class GeneratedApiSpec extends Specification {
                     .id(635L)
                 .status(Pet.StatusEnum.AVAILABLE)
             petApi.addPet(newActualPet)
+    }
+
+    def "serializes dates correctly"() {
+
     }
 
     // date/time specified formats are well defined - they should be ISO - just stick to this
