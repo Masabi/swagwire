@@ -8,6 +8,7 @@ import static {{invokerPackage}}.ApiUtils.*;
 {{#imports}}import {{import}};
 {{/imports}}
 
+import net.dongliu.gson.GsonJava8TypeAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -28,7 +29,11 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         Gson gson;
 
         public {{classname}}() {
-            this(new GsonBuilder().registerTypeAdapterFactory(new EnumTypeAdapterFactory()).create());
+            this(new GsonBuilder()
+                .registerTypeAdapterFactory(new EnumTypeAdapterFactory())
+                .registerTypeAdapterFactory(new GsonJava8TypeAdapterFactory())
+                .create()
+            );
         }
 
         public {{classname}}(Gson gson) {
@@ -131,7 +136,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
             mappingBuilder.withRequestBody(bodyMatcher);
         {{/bodyParam}}
 
-            return new WireMockedRemoteOperation<>(mappingBuilder, contentType);
+            return new WireMockedRemoteOperation<>(mappingBuilder, gson, contentType);
         }
     {{/operation}}
 {{/operations}}

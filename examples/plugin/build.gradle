@@ -39,6 +39,7 @@ dependencies {
     testCompile(
 //        "com.squareup.okhttp3:okhttp:3.9.1",
 //        "com.squareup.okhttp3:okio:3.9.1",
+            'net.dongliu:gson-java8-datatype:1.1.0',
         'com.google.code.gson:gson:2.8.2'
     )
 }

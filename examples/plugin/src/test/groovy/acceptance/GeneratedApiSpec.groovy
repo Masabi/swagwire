@@ -3,16 +3,26 @@ package acceptance
 import acceptance.tobegenerated.RemotelyMockedPetApi
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit.WireMockRule
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import io.swagger.client.ApiClient
 import io.swagger.client.api.PetApi
+import io.swagger.client.api.RemotelyMockedStoreApi
+import io.swagger.client.api.StoreApi
+import io.swagger.client.model.Order
 import io.swagger.client.model.Pet
 
 import io.swagger.client.api.RemotelyMockedPetApi
+import io.swagger.client.model.RemotelyMockedOrder
 import io.swagger.client.model.RemotelyMockedPet
 import io.swagger.client.model.RemotelyMockedTag
+import net.dongliu.gson.GsonJava8TypeAdapterFactory
 import org.junit.Rule
 import spock.lang.PendingFeature
 import spock.lang.Specification
+
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 
@@ -20,12 +30,18 @@ class GeneratedApiSpec extends Specification {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
 
+    private Gson overridenGson = new GsonBuilder().registerTypeAdapterFactory(new GsonJava8TypeAdapterFactory()).create()
+
     private PetApi petApi
     private RemotelyMockedPetApi remotePetApi = new RemotelyMockedPetApi()
+    private StoreApi storeApi
+    private RemotelyMockedStoreApi remoteStoreApi = new RemotelyMockedStoreApi()
 
     def setup() {
         String basePath = "http://localhost:${wireMockRule.port()}"
+        println basePath
         petApi = new PetApi(new ApiClient().setBasePath(basePath))
+        storeApi = new StoreApi(new ApiClient().setBasePath(basePath))
     }
 
     def "can GET a single object"() {
@@ -95,11 +111,27 @@ class GeneratedApiSpec extends Specification {
             petApi.addPet(newActualPet)
     }
 
-    def "serializes dates correctly"() {
+    def "serializes/deserializes dates correctly"() {
+        given:
+            RemotelyMockedOrder newOrder = new RemotelyMockedOrder()
+                .shipDate(OffsetDateTime.of(2018, 1, 6, 16, 28, 3, 7, ZoneOffset.ofHours(1)))
 
+            RemotelyMockedOrder returnOrder = new RemotelyMockedOrder()
+                .shipDate(OffsetDateTime.of(2018, 1, 6, 16, 28, 3, 7, ZoneOffset.ofHours(1)))
+            remoteStoreApi.placeOrder(newOrder).respondsWith(returnOrder)
+
+        expect:
+            Order newActualOrder = new Order()
+                .shipDate(OffsetDateTime.of(2018, 1, 6, 16, 28, 3, 7, ZoneOffset.ofHours(1)))
+
+            def order = storeApi.placeOrder(newActualOrder)
+            order.shipDate.toEpochSecond() == newActualOrder.shipDate.toEpochSecond()
     }
 
-    // date/time specified formats are well defined - they should be ISO - just stick to this
+    void dumpAllMappings() {
+        println WireMock.listAllStubMappings().mappings.toString()
+    }
+// date/time specified formats are well defined - they should be ISO - just stick to this
     // and use Java 8 bindings as that's what we're targetting
     // https://swagger.io/specification/#dataTypes
     def "what does okhttp do?"() {

@@ -7,9 +7,11 @@ import com.google.gson.Gson;
 public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
     private MappingBuilder mappingBuilder;
     private String contentType;
+    private Gson gson;
 
-    public WireMockedRemoteOperation(MappingBuilder mappingBuilder, String contentType) {
+    public WireMockedRemoteOperation(MappingBuilder mappingBuilder, Gson gson, String contentType) {
         this.mappingBuilder = mappingBuilder;
+        this.gson = gson;
         this.contentType = contentType;
     }
 
@@ -37,6 +39,6 @@ public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
      * arises this should change to handle correctly content negotiation
      */
     private String bodyFor(TYPE object) {
-        return new Gson().toJson(object);
+        return gson.toJson(object);
     }
 }
