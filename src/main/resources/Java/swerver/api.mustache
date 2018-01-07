@@ -30,7 +30,6 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
 
         public {{classname}}() {
             this(new GsonBuilder()
-                .registerTypeAdapterFactory(new EnumTypeAdapterFactory())
                 .registerTypeAdapterFactory(new GsonJava8TypeAdapterFactory())
                 .create()
             );

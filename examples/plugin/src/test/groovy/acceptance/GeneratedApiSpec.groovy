@@ -142,7 +142,7 @@ class GeneratedApiSpec extends Specification {
     // straight to WireMock would avoid lots of extra code
     @PendingFeature
     def "can send a partial object"() {
-        // something like petApi.addPet(Partial.of(blahblah)) or something like that - perhaps a matcher or straight
+        // something like actualPetApi.addPet(Partial.of(blahblah)) or something like that - perhaps a matcher or straight
         // into wiremock?
     }
 
