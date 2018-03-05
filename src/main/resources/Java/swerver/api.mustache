@@ -65,7 +65,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
             * @see <a href="{{url}}">{{summary}} Documentation</a>
         {{/externalDocs}}
         */
-        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}{{#bodyParam}}ContentPattern<String> bodyMatcher{{/bodyParam}}) {
+        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}{{#bodyParam}}ContentPattern<String> body{{/bodyParam}}) {
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
             if ({{paramName}} == null) {
@@ -76,7 +76,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
 
 
         String {{localVariablePrefix}}localVarPath = "{{{path}}}"{{#pathParams}}
-            .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}escapeString({{{paramName}}}.toString())){{/pathParams}};
+            .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}{{{paramName}}}.toString()){{/pathParams}};
 
         final String[] {{localVariablePrefix}}localVarAccepts = {
             {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}}
@@ -125,14 +125,14 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
          * This is probably going to be different depending on the operation being done -
          * maybe use the HTTP verb to figure it out
          */
-        MappingBuilder mappingBuilder = WireMock.request("{{httpMethod}}", WireMock.urlEqualTo(localVarPath));
+        MappingBuilder mappingBuilder = WireMock.request("{{httpMethod}}", WireMock.urlPathMatching(localVarPath));
         {{#headerParams}}if ({{paramName}} != null) {
             mappingBuilder
                 .withHeader("{{baseName}}", WireMock.equalTo(parameterToString({{paramName}})));
         }
         {{/headerParams}}
         {{#bodyParam}}
-            mappingBuilder.withRequestBody(bodyMatcher);
+            mappingBuilder.withRequestBody(body);
         {{/bodyParam}}
 
             return new WireMockedRemoteOperation<>(mappingBuilder, gson, contentType);

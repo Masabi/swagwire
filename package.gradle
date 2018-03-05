@@ -1,5 +1,8 @@
 apply plugin: 'maven-publish'
 
+group = "com.github.tddmonkey"
+version "0.0.7-SNAPSHOT"
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

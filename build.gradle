@@ -4,9 +4,6 @@ plugins {
 	id 'groovy'
 }
 
-group = "com.github.tddmonkey"
-version "0.0.4-SNAPSHOT"
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 

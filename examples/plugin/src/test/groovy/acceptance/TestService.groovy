@@ -1,5 +1,5 @@
 package acceptance
 
 class TestService {
-    String endpoint
+        String endpoint
 }

@@ -36,7 +36,7 @@ class PetStoreSpec extends Specification {
     def "can add a pet successfully"() {
         given:
             mockedPetApi.addPet(TestPets.ROVER.remotePet).succeeds()
-
+        
         when:
             actualPetApi.addPet(TestPets.ROVER.actualPet)
 
