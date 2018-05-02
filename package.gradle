@@ -1,17 +1,28 @@
-apply plugin: 'maven-publish'
+apply plugin: 'maven'
 
-group = "com.github.tddmonkey"
-version "0.0.7-SNAPSHOT"
+group = "com.masabi.wireswag"
+version "0.0.8-SNAPSHOT"
 
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+}
 
-            artifact sourceJar {
-                classifier "sources"
-            }
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+artifacts {
+    archives jar
+    archives javadocJar
+    archives sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://repo")
         }
-
     }
 }

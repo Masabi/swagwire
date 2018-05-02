@@ -1,4 +1,4 @@
-package com.github.tddmonkey.swerver;
+package com.masabi.schwitfy;
 
 import io.swagger.codegen.*;
 import io.swagger.codegen.languages.AbstractJavaCodegen;
@@ -15,14 +15,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-public class SwerverCodegen extends JavaClientCodegen {
-    public SwerverCodegen() {
-        this.supportedLibraries.put("swerver", "Test client generation");
+public class WireswagCodegen extends JavaClientCodegen {
+    private static final String CLASS_PREFIX = "RemotelyMocked";
+
+    public WireswagCodegen() {
+        this.supportedLibraries.put("wireswag", "Test client generation");
     }
 
     @Override
     public String getName() {
-        return "swerver";
+        return "wireswag";
     }
 
     @Override
@@ -37,24 +39,24 @@ public class SwerverCodegen extends JavaClientCodegen {
 
     @Override
     public String toApiName(String name) {
-        return "RemotelyMocked" + super.toApiName(name);
+        return CLASS_PREFIX + super.toApiName(name);
     }
 
     @Override
     public String toModelName(String name) {
-        return "RemotelyMocked" + super.toModelName(name);
+        return CLASS_PREFIX + super.toModelName(name);
     }
 
     @Override
     public void processOpts() {
-        setLibrary("swerver");
+        setLibrary("wireswag");
 
         super.processOpts();
 
         modelTemplateFiles.remove("model.mustache");
-        modelTemplateFiles.put("swerver/model.mustache", ".java");
+        modelTemplateFiles.put("wireswag/model.mustache", ".java");
         apiTemplateFiles.remove("api.mustache");
-        apiTemplateFiles.put("swerver/api.mustache", ".java");
+        apiTemplateFiles.put("wireswag/api.mustache", ".java");
 
         Set<String> templateFilesToKeep = new HashSet<String>() {{
             add("JSON.mustache");
@@ -64,10 +66,10 @@ public class SwerverCodegen extends JavaClientCodegen {
         this.apiTestTemplateFiles.clear();
         String invokerFolder = (this.sourceFolder + '/' + this.invokerPackage).replace(".", "/");
 
-        this.supportingFiles.add(new SupportingFile("swerver/apiresponse.mustache", invokerFolder, "RemoteOperation.java"));
-        this.supportingFiles.add(new SupportingFile("swerver/wiremock_api_response.mustache", invokerFolder, "WireMockedRemoteOperation.java"));
-        this.supportingFiles.add(new SupportingFile("swerver/apiutils.mustache", invokerFolder, "ApiUtils.java"));
-//        this.supportingFiles.add(new SupportingFile("swerver/enum_typeadapterfactory.mustache", invokerFolder, "EnumTypeAdapterFactory.java"));
+        this.supportingFiles.add(new SupportingFile("wireswag/apiresponse.mustache", invokerFolder, "RemoteOperation.java"));
+        this.supportingFiles.add(new SupportingFile("wireswag/wiremock_api_response.mustache", invokerFolder, "WireMockedRemoteOperation.java"));
+        this.supportingFiles.add(new SupportingFile("wireswag/apiutils.mustache", invokerFolder, "ApiUtils.java"));
+//        this.supportingFiles.add(new SupportingFile("wireswag/enum_typeadapterfactory.mustache", invokerFolder, "EnumTypeAdapterFactory.java"));
 //            setUseRuntimeException(true);
 
         this.additionalProperties.put("gson", "true");
