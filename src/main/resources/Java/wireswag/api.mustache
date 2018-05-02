@@ -43,7 +43,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         {{#bodyParam}}
         // do the passthrough ere
         public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
-            return {{operationId}}({{#allParams}}{{^isBodyParam}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}WireMock.equalToJson(gson.toJson({{paramName}}), false, false));
+            return {{operationId}}({{#allParams}}{{^isBodyParam}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}} WireMock.equalToJson(gson.toJson({{paramName}}), false, false));
         }
         {{/bodyParam}}
 
@@ -65,7 +65,15 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
             * @see <a href="{{url}}">{{summary}} Documentation</a>
         {{/externalDocs}}
         */
-        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}{{#bodyParam}}ContentPattern<String> body{{/bodyParam}}) {
+
+        //
+        //
+        // I bet the final comma before the body on this doesn't work when there's only a single argument
+        //
+        // We should have tests or something for that
+
+
+        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}{{#bodyParam}} ContentPattern<String> body{{/bodyParam}}) {
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
             if ({{paramName}} == null) {
