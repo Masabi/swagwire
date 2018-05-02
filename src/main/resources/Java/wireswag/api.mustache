@@ -43,7 +43,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         {{#bodyParam}}
         // do the passthrough ere
         public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
-            return {{operationId}}({{#allParams}}{{^isBodyParam}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}} WireMock.equalToJson(gson.toJson({{paramName}}), false, false));
+            return {{operationId}}({{#allParams}}{{#isBodyParam}}WireMock.equalToJson(gson.toJson({{paramName}}), false, false){{/isBodyParam}}{{^isBodyParam}}{{paramName}}{{/isBodyParam}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
         }
         {{/bodyParam}}
 
@@ -73,7 +73,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         // We should have tests or something for that
 
 
-        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/isBodyParam}}{{/allParams}}{{#bodyParam}} ContentPattern<String> body{{/bodyParam}}) {
+        public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}}{{/isBodyParam}}{{#isBodyParam}}ContentPattern<String>{{/isBodyParam}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
             if ({{paramName}} == null) {
