@@ -17,7 +17,8 @@ public class ApiUtils {
 
         public static String selectHeaderAccept(String[] accepts) {
             if (accepts.length == 0) {
-                return null;
+                // Nothing was specified to presume it's json we want
+                return "application/json";
             }
             for (String accept : accepts) {
                 if (isJsonMime(accept)) {

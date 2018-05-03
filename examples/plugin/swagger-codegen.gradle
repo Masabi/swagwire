@@ -6,7 +6,7 @@ repositories {
 dependencies {
     swaggerCodegen(
         "io.swagger:swagger-codegen-cli:$swaggerCliVersion",
-        "com.github.tddmonkey:swerver:+"
+        "com.masabi.swagwire:swagwire:+"
     )
 }
 
@@ -27,7 +27,7 @@ swaggerSources {
     petstoreTest {
         inputFile = file('src/main/resources/petstore.json')
         code {
-            language = 'swerver'
+            language = 'swagwire'
             outputDir = file("$buildDir/swagger-test-code")
             additionalProperties = [
                 dateLibrary: 'java8'

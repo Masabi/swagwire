@@ -12,10 +12,9 @@ import io.swagger.client.api.StoreApi
 import io.swagger.client.model.Order
 import io.swagger.client.model.Pet
 
-import io.swagger.client.api.RemotelyMockedPetApi
+
 import io.swagger.client.model.RemotelyMockedOrder
 import io.swagger.client.model.RemotelyMockedPet
-import io.swagger.client.model.RemotelyMockedTag
 import net.dongliu.gson.GsonJava8TypeAdapterFactory
 import org.junit.Rule
 import spock.lang.PendingFeature

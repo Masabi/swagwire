@@ -1,11 +1,10 @@
 package acceptance
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule
-import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import groovy.transform.Canonical
 import io.swagger.client.ApiClient
 import io.swagger.client.api.PetApi
-import io.swagger.client.api.RemotelyMockedPetApi
+
 import io.swagger.client.model.Category
 import io.swagger.client.model.Pet
 import io.swagger.client.model.RemotelyMockedCategory

@@ -1,31 +1,27 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+	}
+}
+
 plugins {
-	id 'idea'
-	id 'java'
-	id 'groovy'
+	id "org.jetbrains.kotlin.jvm" version "1.2.31" apply false
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+defaultTasks 'uploadArchives'
 
-[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-[compileJava, compileTestJava]*.options*.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-
-repositories {
-	jcenter()
+allprojects {
+	apply plugin: 'idea'
 }
 
-dependencies {
-	compile (
-		"io.swagger:swagger-codegen-cli:$swaggerCliVersion",
-	)
-
-	testCompile(
-		"org.spockframework:spock-core:$spockVersion",
-	)
+subprojects {
+	apply from: "${rootProject.projectDir}/subproject.gradle"
 }
-
-task sourceJar(type: Jar) {
-	from sourceSets.main.allJava
-}
-
-apply from: 'package.gradle'

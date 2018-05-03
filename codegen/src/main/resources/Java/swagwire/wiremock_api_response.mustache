@@ -2,20 +2,20 @@ package {{invokerPackage}};
 
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.google.gson.Gson;
 
-public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
+public class RemoteOperation<TYPE> {
     private MappingBuilder mappingBuilder;
     private String contentType;
     private Gson gson;
 
-    public WireMockedRemoteOperation(MappingBuilder mappingBuilder, Gson gson, String contentType) {
+    public RemoteOperation(MappingBuilder mappingBuilder, Gson gson, String contentType) {
         this.mappingBuilder = mappingBuilder;
         this.gson = gson;
         this.contentType = contentType;
     }
 
-    @Override
     public void respondsWith(TYPE object) {
         WireMock.stubFor(mappingBuilder.willReturn(
             WireMock.aResponse()
@@ -25,8 +25,11 @@ public class WireMockedRemoteOperation<TYPE> implements RemoteOperation<TYPE> {
         ));
     }
 
+    public void respondsWith(ResponseDefinitionBuilder response) {
+        WireMock.stubFor(mappingBuilder.willReturn(response));
+    }
+
     // TODO is this always a 200? Could we get it from the input spec?
-    @Override
     public void succeeds() {
         WireMock.stubFor(mappingBuilder.willReturn(
             WireMock.aResponse()

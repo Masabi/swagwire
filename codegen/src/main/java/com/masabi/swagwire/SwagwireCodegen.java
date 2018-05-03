@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SwagwireCodegen extends JavaClientCodegen {
-    private static final String CLASS_PREFIX = "RemotelyMocked";
+    private static final String CLASS_PREFIX = "SwagWired";
 
     public SwagwireCodegen() {
         this.supportedLibraries.put("swagwire", "Test client generation");
@@ -57,8 +57,8 @@ public class SwagwireCodegen extends JavaClientCodegen {
         this.apiTestTemplateFiles.clear();
         String invokerFolder = (this.sourceFolder + '/' + this.invokerPackage).replace(".", "/");
 
-        this.supportingFiles.add(new SupportingFile("swagwire/apiresponse.mustache", invokerFolder, "RemoteOperation.java"));
-        this.supportingFiles.add(new SupportingFile("swagwire/wiremock_api_response.mustache", invokerFolder, "WireMockedRemoteOperation.java"));
+//        this.supportingFiles.add(new SupportingFile("swagwire/apiresponse.mustache", invokerFolder, "RemoteOperation.java"));
+//        this.supportingFiles.add(new SupportingFile("swagwire/wiremock_api_response.mustache", invokerFolder, "RemoteOperation.java"));
         this.supportingFiles.add(new SupportingFile("swagwire/apiutils.mustache", invokerFolder, "ApiUtils.java"));
 //        this.supportingFiles.add(new SupportingFile("swagwire/enum_typeadapterfactory.mustache", invokerFolder, "EnumTypeAdapterFactory.java"));
         setUseRuntimeException(true);

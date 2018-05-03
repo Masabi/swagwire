@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
     import java.util.Map;
 {{/fullJavaUtil}}
 
+import com.masabi.swagwire.core.RemoteOperation;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.ContentPattern;
@@ -143,7 +144,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
             mappingBuilder.withRequestBody(body);
         {{/bodyParam}}
 
-            return new WireMockedRemoteOperation<>(mappingBuilder, gson, contentType);
+            return new RemoteOperation<>(mappingBuilder, gson, contentType);
         }
     {{/operation}}
 {{/operations}}

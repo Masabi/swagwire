@@ -1,0 +1,5 @@
+Swagwire
+=====
+
+![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiSkp3amVvYkpweHB0TktiaGY0bURuRTVCbTgrZEJzY1V2Q1lOYXEwZjFPV2JUWkVkNDF0RGRYSU5VZkFkdVJNbnZ0MGxVK3Qzd0lGNjdCQmJ5YXdTR0R3PSIsIml2UGFyYW1ldGVyU3BlYyI6InpvZWR5RDJGdlF1VTJraVIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+
