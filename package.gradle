@@ -1,7 +1,7 @@
 apply plugin: 'maven'
 
-group = "com.masabi.wireswag"
-version "0.0.8-SNAPSHOT"
+group = "com.masabi.swagwire"
+version "0.0.15-SNAPSHOT"
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
