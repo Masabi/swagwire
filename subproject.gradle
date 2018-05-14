@@ -1,0 +1,27 @@
+apply plugin: 'groovy'
+
+project.ext {
+	jvmVersion = 1.8
+}
+
+sourceCompatibility = project.jvmVersion
+targetCompatibility = project.jvmVersion
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+[compileJava, compileTestJava]*.options*.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+
+repositories {
+	jcenter()
+}
+
+dependencies {
+	testCompile(
+			"org.spockframework:spock-core:$spockVersion",
+	)
+}
+
+task sourceJar(type: Jar) {
+	from sourceSets.main.allJava
+}
+
+apply from: '../package.gradle'

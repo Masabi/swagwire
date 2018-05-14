@@ -1,0 +1,6 @@
+package {{invokerPackage}};
+
+public interface RemoteOperation<RESPONSE_TYPE> {
+    void respondsWith(RESPONSE_TYPE object);
+    void succeeds();
+}

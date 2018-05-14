@@ -1,0 +1,7 @@
+include 'codegen'
+include 'core'
+
+rootProject.name = 'swagwire'
+project(":codegen").name = "swagwire-codegen"
+project(":core").name = "swagwire-core"
+

@@ -1,0 +1,41 @@
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    swaggerCodegen(
+        "io.swagger:swagger-codegen-cli:$swaggerCliVersion",
+        "com.masabi.swagwire:swagwire:+"
+    )
+}
+
+swaggerSources {
+    petstore {
+        inputFile = file('src/main/resources/petstore.json')
+        code {
+            language = 'java'
+            library = 'jersey2'
+            additionalProperties = [
+                java8Mode: true,
+                dateLibrary: 'java8'
+            ]
+        }
+    }
+
+//    /*
+    petstoreTest {
+        inputFile = file('src/main/resources/petstore.json')
+        code {
+            language = 'swagwire'
+            outputDir = file("$buildDir/swagger-test-code")
+            additionalProperties = [
+                dateLibrary: 'java8'
+            ]
+        }
+    }
+}
+
+compileJava.dependsOn swaggerSources.petstore.code
+sourceSets.main.java.srcDir "${swaggerSources.petstore.code.outputDir.path}/src/main/java"
+sourceSets.test.java.srcDir "${swaggerSources.petstoreTest.code.outputDir.path}/src/main/java"

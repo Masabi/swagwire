@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - set -o allexport; . ./version.properties; set +o allexport
+      - echo "version is " $version
+      - cat version.properties
+      - ./gradlew
+      - cd repo && bash -x artifactory-publish .

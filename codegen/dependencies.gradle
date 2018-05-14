@@ -1,0 +1,5 @@
+dependencies {
+    compile (
+            "io.swagger:swagger-codegen-cli:$swaggerCliVersion",
+    )
+}

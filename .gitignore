@@ -1,0 +1,6 @@
+*.i??
+*.log
+.gradle
+build/
+out/
+*.bak

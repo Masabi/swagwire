@@ -1,0 +1,52 @@
+package {{invokerPackage}};
+
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
+import java.util.stream.Collectors;
+
+public class ApiUtils {
+        public static String escapeString(String str) {
+            try {
+                return java.net.URLEncoder.encode(str, "utf8").replaceAll("\\+", "%20");
+            } catch (java.io.UnsupportedEncodingException e) {
+                return str;
+            }
+        }
+
+        public static String selectHeaderAccept(String[] accepts) {
+            if (accepts.length == 0) {
+                // Nothing was specified to presume it's json we want
+                return "application/json";
+            }
+            for (String accept : accepts) {
+                if (isJsonMime(accept)) {
+                    return accept;
+                }
+            }
+            return join(accepts, ",");
+        }
+
+        private static boolean isJsonMime(String mime) {
+            String jsonMime = "(?i)^(application/json|[^;/ \t]+/[^;/ \t]+[+]json)[ \t]*(;.*)?$";
+            return mime != null && (mime.matches(jsonMime) || mime.equalsIgnoreCase("application/json-patch+json"));
+        }
+
+          private static String join(String[] array, String separator) {
+              return Arrays.stream(array).collect(Collectors.joining(separator));
+          }
+
+        public static String parameterToString(Object param) {
+          if (param == null) {
+            return "";
+          } else if (param instanceof Date) {
+            return DateTimeFormatter.ISO_INSTANT.format(((Date) param).toInstant());
+          } else if (param instanceof Collection) {
+            return ((Collection)param).stream().collect(Collectors.joining(",")).toString();
+          } else {
+            return String.valueOf(param);
+          }
+        }
+
+}

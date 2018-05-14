@@ -1,0 +1,47 @@
+package {{invokerPackage}};
+
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
+import com.github.tomakehurst.wiremock.client.WireMock;
+import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
+import com.google.gson.Gson;
+
+public class RemoteOperation<TYPE> {
+    private MappingBuilder mappingBuilder;
+    private String contentType;
+    private Gson gson;
+
+    public RemoteOperation(MappingBuilder mappingBuilder, Gson gson, String contentType) {
+        this.mappingBuilder = mappingBuilder;
+        this.gson = gson;
+        this.contentType = contentType;
+    }
+
+    public void respondsWith(TYPE object) {
+        WireMock.stubFor(mappingBuilder.willReturn(
+            WireMock.aResponse()
+                .withStatus(200)
+                .withHeader("Content-Type", contentType)
+                .withBody(bodyFor(object))
+        ));
+    }
+
+    public void respondsWith(ResponseDefinitionBuilder response) {
+        WireMock.stubFor(mappingBuilder.willReturn(response));
+    }
+
+    // TODO is this always a 200? Could we get it from the input spec?
+    public void succeeds() {
+        WireMock.stubFor(mappingBuilder.willReturn(
+            WireMock.aResponse()
+                .withStatus(200)
+        ));
+    }
+
+    /**
+     * This is currently hardcoded to doing just json right now - as the need
+     * arises this should change to handle correctly content negotiation
+     */
+    private String bodyFor(TYPE object) {
+        return gson.toJson(object);
+    }
+}
