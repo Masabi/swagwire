@@ -94,7 +94,28 @@ Note that if you fail to setup any expectations, your test will fail with Wiremo
 
 
 ## Downloading
-Swagwire will shortly be available on Maven central
+Swagwire is available from Maven Central.
+
+*Example Gradle*
+```
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        compile("com.masabi.swagwire:swagwire-codegen:0.0.24")
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile("com.masabi.swagwire:swagwire-core:0.0.24")
+}
+```
 
 ## FAQs
 *Do I have to be using Swagger codegen in production to use this?*

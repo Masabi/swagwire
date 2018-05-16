@@ -1,4 +1,5 @@
 apply plugin: 'maven'
+apply plugin: 'signing'
 apply from: '../version.properties'
 
 group = "com.masabi.swagwire"
@@ -19,10 +20,60 @@ artifacts {
     archives sourcesJar
 }
 
+signing {
+    sign configurations.archives
+}
+
+def sonatypeCreds = [
+        userName: ossrhUsername,
+        password: ossrhPassword
+]
+def mavenDeployRepo = [
+    releases: project.properties["mavenReleaseRepo"] ?: "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
+    snapshot: project.properties["mavenSnapshotRepo"] ?: "https://oss.sonatype.org/content/repositories/snapshots/"
+]
+
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "file://repo")
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: mavenDeployRepo.releases) {
+                authentication(sonatypeCreds)
+            }
+
+            snapshotRepository(url: mavenDeployRepo.snapshot) {
+                authentication(sonatypeCreds)
+            }
+
+            pom.project {
+                name 'Swagwire'
+                packaging 'jar'
+                description 'Swagwire combines Swagger and Wiremock to generate tests stubs for HTTP integration testing'
+                url 'https://github.com/Masabi/swagwire'
+
+                scm {
+                    url 'https://github.com/Masabi/swagwire'
+                    connection 'scm:git:git://github.com/Masabi/swagwire.git'
+                    developerConnection 'scm:git:git@github.com:Masabi/swagwire.git'
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'tddmonkey'
+                        name 'Colin Vipurs'
+                    }
+                }
+            }
         }
     }
 }
+

@@ -1,4 +1,5 @@
 apply plugin: 'groovy'
+apply from: '../package.gradle'
 
 project.ext {
 	jvmVersion = 1.8
@@ -19,9 +20,3 @@ dependencies {
 			"org.spockframework:spock-core:$spockVersion",
 	)
 }
-
-task sourceJar(type: Jar) {
-	from sourceSets.main.allJava
-}
-
-apply from: '../package.gradle'
