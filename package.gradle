@@ -25,12 +25,12 @@ signing {
 }
 
 def sonatypeCreds = [
-        userName: ossrhUsername,
-        password: ossrhPassword
+        userName: project.properties['ossrhUsername'] ?: "",
+        password: project.properties['ossrhPassword'] ?: ""
 ]
 def mavenDeployRepo = [
-    releases: project.properties["mavenReleaseRepo"] ?: "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
-    snapshot: project.properties["mavenSnapshotRepo"] ?: "https://oss.sonatype.org/content/repositories/snapshots/"
+    releases: project.properties['mavenReleaseRepo'] ?: "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
+    snapshot: project.properties['mavenSnapshotRepo'] ?: "https://oss.sonatype.org/content/repositories/snapshots/"
 ]
 
 uploadArchives {
