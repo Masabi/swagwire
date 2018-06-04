@@ -4,33 +4,25 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule
 import groovy.transform.Canonical
 import io.swagger.client.ApiClient
 import io.swagger.client.api.PetApi
-
-import io.swagger.client.model.Category
-import io.swagger.client.model.Pet
-import io.swagger.client.model.RemotelyMockedCategory
-import io.swagger.client.model.RemotelyMockedPet
-import io.swagger.client.model.RemotelyMockedTag
-import io.swagger.client.model.Tag
+import io.swagger.client.api.SwagWiredPetApi
+import io.swagger.client.model.*
 import org.junit.Rule
 import spock.lang.Specification
 
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-
 
 class PetStoreSpec extends Specification {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
 
     private PetApi actualPetApi
-    private RemotelyMockedPetApi mockedPetApi
+    private SwagWiredPetApi mockedPetApi
 
     def setup() {
         String basePath = "http://localhost:${wireMockRule.port()}"
         actualPetApi = new PetApi(new ApiClient().setBasePath(basePath))
-        mockedPetApi = new RemotelyMockedPetApi()
+        mockedPetApi = new SwagWiredPetApi()
     }
-
-    /** pet requires auth to work - this needs to be setup correctly when doing expected requests! **/
 
     def "can add a pet successfully"() {
         given:
@@ -45,7 +37,7 @@ class PetStoreSpec extends Specification {
 
     def "can fail to add a pet when instructed"() {
         given:
-            mockedPetApi.addPet(RemotelyMockedPet.ANY).succeeds()
+            mockedPetApi.addPet(SwagWiredPet.ANY).succeeds()
 
         when:
             actualPetApi.addPet(TestPets.SNUFFLES.actualPet)
@@ -67,15 +59,15 @@ public class TestPets {
                 .addPhotoUrlsItem("http://photos.url/path/to/rover/2")
                 .addTagsItem(new Tag().id(10).name("Fluffy"))
                 .addTagsItem(new Tag().id(11).name("Smelly")),
-            remotePet: new RemotelyMockedPet()
+            remotePet: new SwagWiredPet()
                 .id(1234)
                 .name("Rover")
-                .status(RemotelyMockedPet.StatusEnum.SOLD)
-                .category(new RemotelyMockedCategory().id(1).name("Dog"))
+                .status(SwagWiredPet.StatusEnum.SOLD)
+                .category(new SwagWiredCategory().id(1).name("Dog"))
                 .addPhotoUrlsItem("http://photos.url/path/to/rover/1")
                 .addPhotoUrlsItem("http://photos.url/path/to/rover/2")
-                .addTagsItem(new RemotelyMockedTag().id(10).name("Fluffy"))
-                .addTagsItem(new RemotelyMockedTag().id(11).name("Smelly"))
+                .addTagsItem(new SwagWiredTag().id(10).name("Fluffy"))
+                .addTagsItem(new SwagWiredTag().id(11).name("Smelly"))
         )
 
     public static final SNUFFLES = new TestPet(
@@ -88,15 +80,15 @@ public class TestPets {
                     .addPhotoUrlsItem("http://photos.url/path/to/snuffles/2")
                     .addTagsItem(new Tag().id(10).name("Fluffy"))
                     .addTagsItem(new Tag().id(11).name("Evil")),
-            remotePet: new RemotelyMockedPet()
+            remotePet: new SwagWiredPet()
                     .id(999)
                     .name("Rover")
-                    .status(RemotelyMockedPet.StatusEnum.AVAILABLE)
-                    .category(new RemotelyMockedCategory().id(2).name("Cat"))
+                    .status(SwagWiredPet.StatusEnum.AVAILABLE)
+                    .category(new SwagWiredCategory().id(2).name("Cat"))
                     .addPhotoUrlsItem("http://photos.url/path/to/snuffles/1")
                     .addPhotoUrlsItem("http://photos.url/path/to/snuffles/2")
-                    .addTagsItem(new RemotelyMockedTag().id(10).name("Fluffy"))
-                    .addTagsItem(new RemotelyMockedTag().id(11).name("Evil"))
+                    .addTagsItem(new SwagWiredTag().id(10).name("Fluffy"))
+                    .addTagsItem(new SwagWiredTag().id(11).name("Evil"))
     )
 
 }
@@ -104,5 +96,5 @@ public class TestPets {
 @Canonical
 public class TestPet {
     Pet actualPet
-    RemotelyMockedPet remotePet
+    SwagWiredPet remotePet
 }
