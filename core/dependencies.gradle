@@ -1,10 +1,8 @@
 dependencies {
-    api (
+    compile (
         "com.github.tomakehurst:wiremock:$wiremockVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlinVersion",
-    )
-
-    implementation(
         "com.google.code.gson:gson:$gsonVersion",
+        "net.dongliu:gson-java8-datatype:1.1.0",
     )
 }

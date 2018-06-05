@@ -6,7 +6,7 @@ repositories {
 dependencies {
     swaggerCodegen(
         "io.swagger:swagger-codegen-cli:$swaggerCliVersion",
-        "com.masabi.swagwire:swagwire:+"
+        "com.masabi.swagwire:swagwire-codegen:+"
     )
 }
 
@@ -23,7 +23,6 @@ swaggerSources {
         }
     }
 
-//    /*
     petstoreTest {
         inputFile = file('src/main/resources/petstore.json')
         code {
