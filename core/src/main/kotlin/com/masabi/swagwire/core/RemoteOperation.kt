@@ -10,6 +10,7 @@ class RemoteOperation<in TYPE>(
         private val gson: Gson,
         private val contentType: String
 ) {
+    val request = mappingBuilder.build().request
 
     fun respondsWith(responseObject: TYPE) {
         WireMock.stubFor(mappingBuilder.willReturn(
