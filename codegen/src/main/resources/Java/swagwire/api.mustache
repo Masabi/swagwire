@@ -20,6 +20,7 @@ import com.google.gson.GsonBuilder;
 {{/fullJavaUtil}}
 
 import com.masabi.swagwire.core.RemoteOperation;
+import com.masabi.swagwire.core.SwagwiredServiceConfiguration;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.ContentPattern;
@@ -27,24 +28,25 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
 {{>generatedAnnotation}}
 {{#operations}}
     public class {{classname}} {
-        Gson gson;
+        private SwagwiredServiceConfiguration configuration;
 
         public {{classname}}() {
-            this(new GsonBuilder()
-                .registerTypeAdapterFactory(new GsonJava8TypeAdapterFactory())
-                .create()
-            );
+            this(SwagwiredServiceConfiguration.builder().build());
+        }
+
+        public {{classname}}(SwagwiredServiceConfiguration configuration) {
+            this.configuration = configuration;
         }
 
         public {{classname}}(Gson gson) {
-            this.gson = gson;
+            this.configuration = SwagwiredServiceConfiguration.builder().gson(gson).build();
         }
 
     {{#operation}}
         {{#bodyParam}}
         // do the passthrough ere
         public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{{dataType}}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
-            return {{operationId}}({{#allParams}}{{#isBodyParam}}WireMock.equalToJson(gson.toJson({{paramName}}), false, false){{/isBodyParam}}{{^isBodyParam}}{{paramName}}{{/isBodyParam}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
+            return {{operationId}}({{#allParams}}{{#isBodyParam}}WireMock.equalToJson(configuration.getGson().toJson({{paramName}}), false, false){{/isBodyParam}}{{^isBodyParam}}{{paramName}}{{/isBodyParam}}{{#hasMore}}, {{/hasMore}}{{/allParams}});
         }
         {{/bodyParam}}
 
@@ -84,7 +86,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         // create path and map variables
 
 
-        String {{localVariablePrefix}}localVarPath = "{{{path}}}"{{#pathParams}}
+        String {{localVariablePrefix}}localVarPath = configuration.getBasePath() + "{{{path}}}"{{#pathParams}}
             .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}{{{paramName}}}.toString()){{/pathParams}};
 
         final String[] {{localVariablePrefix}}localVarAccepts = {
@@ -144,7 +146,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
             mappingBuilder.withRequestBody(body);
         {{/bodyParam}}
 
-            return new RemoteOperation<>(mappingBuilder, gson, contentType);
+            return new RemoteOperation<>(mappingBuilder, configuration.getGson(), contentType);
         }
     {{/operation}}
 {{/operations}}

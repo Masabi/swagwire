@@ -1,0 +1,18 @@
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+    compile (
+            "com.masabi.kotlinbuilder:masabi-kotlinbuilder:$kotlinBuilderVersion"
+    )
+
+    kapt(
+            "com.masabi.kotlinbuilder:masabi-kotlinbuilder-processor:$kotlinBuilderVersion"
+    )
+}
+
+idea {
+    module {
+        sourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
+        generatedSourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
+    }
+}
