@@ -5,7 +5,7 @@ import io.swagger.client.api.StoreApi
 import io.swagger.client.api.SwagWiredStoreApi
 import org.junit.Before
 
-trait StoreDsl {
+trait StoreApiDsl {
     StoreApi storeApi
     SwagWiredStoreApi remoteStoreApi
 

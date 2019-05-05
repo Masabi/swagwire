@@ -1,12 +1,9 @@
 package acceptance
 
-import acceptance.dsl.PetDsl
-import acceptance.dsl.StoreDsl
+import acceptance.dsl.PetApiDsl
+import acceptance.dsl.StoreApiDsl
 import acceptance.dsl.WireMockPerTest
 import com.github.tomakehurst.wiremock.client.WireMock
-import io.swagger.client.ApiClient
-import io.swagger.client.api.StoreApi
-import io.swagger.client.api.SwagWiredStoreApi
 import io.swagger.client.model.Order
 import io.swagger.client.model.Pet
 import io.swagger.client.model.SwagWiredOrder
@@ -16,7 +13,7 @@ import spock.lang.Specification
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-class GeneratedApiSpec extends Specification implements WireMockPerTest, PetDsl, StoreDsl {
+class GeneratedApiSpec extends Specification implements WireMockPerTest, PetApiDsl, StoreApiDsl {
     def "can GET a single object"() {
         given:
             SwagWiredPet pet1 = new SwagWiredPet().id(1L)
