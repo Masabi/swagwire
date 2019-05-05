@@ -23,11 +23,20 @@ class Data<in TYPE>(private val data: TYPE): RemoteOperationResponse<TYPE>() {
         fun <TYPE> of(data: TYPE) = Data(data)
     }
 }
-class Success<TYPE> private constructor(private val status: Int): RemoteOperationResponse<TYPE>() {
+class Response<TYPE> private constructor(private val status: Int): RemoteOperationResponse<TYPE>() {
     override fun populateResponse(response: ResponseDefinitionBuilder, gson: Gson) = response.withStatus(status)
 
     companion object {
         @JvmStatic
-        fun <TYPE> noContent() = Success<TYPE>(204)
+        fun <TYPE> ofStatus(status: Int) = Response<TYPE>(status)
+
+        @JvmStatic
+        fun <TYPE> noContent() = Response<TYPE>(204)
+
+        @JvmStatic
+        fun <TYPE> ok() = Response<TYPE>(200)
+
+        @JvmStatic
+        fun <TYPE> notFound() = Response<TYPE>(404)
     }
 }
