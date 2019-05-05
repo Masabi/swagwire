@@ -30,6 +30,10 @@ dependencies {
         "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion",
         "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
     )
+
+    testRuntime(
+        "javax.xml.bind:jaxb-api:2.3.1"
+    )
 }
 
 apply from: 'swagger-codegen.gradle'

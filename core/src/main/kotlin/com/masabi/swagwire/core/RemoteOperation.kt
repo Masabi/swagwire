@@ -38,6 +38,11 @@ class RemoteOperation<TYPE>(
         WireMock.stubFor(mappingBuilder.willReturn(response))
     }
 
+    fun respondsWith(response: RemoteOperationResponse<TYPE>) {
+        WireMock.stubFor(mappingBuilder
+            .willReturn(response.populateResponse(defaultResponse(), gson)))
+    }
+
     fun respondsWith(vararg responses: RemoteOperationResponse<TYPE>) {
         val scenarioName = "Test Scenario"
         var currentScenario = Scenario.STARTED
