@@ -19,7 +19,7 @@ dependencies {
     // dependencies required to run swagwire
     // swagwire-core has compile time dependencies on the other libraries required
     testCompile(
-        "com.masabi.swagwire:swagwire-core:+"
+        "com.masabi.swagwire:swagwire-core:0.0.26-rc4"
     )
 
     // dependencies needed for production code generation - these would be part of your standard build
@@ -29,6 +29,10 @@ dependencies {
         "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion",
         "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion",
         "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
+    )
+
+    testRuntime(
+        "javax.xml.bind:jaxb-api:2.3.1"
     )
 }
 

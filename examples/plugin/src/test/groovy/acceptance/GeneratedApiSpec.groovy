@@ -1,40 +1,19 @@
 package acceptance
 
+import acceptance.dsl.PetApiDsl
+import acceptance.dsl.StoreApiDsl
+import acceptance.dsl.WireMockPerTest
 import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.junit.WireMockRule
-import io.swagger.client.ApiClient
-import io.swagger.client.api.PetApi
-import io.swagger.client.api.StoreApi
-import io.swagger.client.api.SwagWiredPetApi
-import io.swagger.client.api.SwagWiredStoreApi
 import io.swagger.client.model.Order
 import io.swagger.client.model.Pet
 import io.swagger.client.model.SwagWiredOrder
 import io.swagger.client.model.SwagWiredPet
-import org.junit.Rule
 import spock.lang.Specification
 
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
-
-class GeneratedApiSpec extends Specification {
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(wireMockConfig().dynamicPort().dynamicHttpsPort());
-
-    private PetApi petApi
-    private SwagWiredPetApi remotePetApi = new SwagWiredPetApi()
-    private StoreApi storeApi
-    private SwagWiredStoreApi remoteStoreApi = new SwagWiredStoreApi()
-
-    def setup() {
-        String basePath = "http://localhost:${wireMockRule.port()}"
-        println basePath
-        petApi = new PetApi(new ApiClient().setBasePath(basePath))
-        storeApi = new StoreApi(new ApiClient().setBasePath(basePath))
-    }
-
+class GeneratedApiSpec extends Specification implements WireMockPerTest, PetApiDsl, StoreApiDsl {
     def "can GET a single object"() {
         given:
             SwagWiredPet pet1 = new SwagWiredPet().id(1L)
