@@ -47,13 +47,12 @@ Swagwire helps to overcome this by generating code stubs for the Wiremock bindin
     @Rule
     WireMockRule wireMockRule = new WireMockRule(0)
 
-    def setup() {
-        WireMock.configureFor(wireMockRule.port())
-    }
-
     def "can fetch a pet"() {
         given:
-            SwagWiredPetApi api = new SwagWiredPetApi()
+            SwagWiredServiceConfiguration configuration = SwagWiredServiceConfiguration.builder()
+                .wireMock(wireMockRule)
+                .build()
+            SwagWiredPetApi api = new SwagWiredPetApi(configuration)
             SwagWiredPet pet = new SwagWiredPet()
                 .name("Rover")
                 .photoUrls(["http://url1", "http://url2"])
@@ -68,7 +67,7 @@ Swagwire helps to overcome this by generating code stubs for the Wiremock bindin
 
 Note that here our code is focused around domain objects instead of HTTP requests.  Behind the scenes this has done exactly the same as the previous test, but with the safety that everything is done according to the swagger spec.
 
-
+As of version `0.0.27`, you can provide a `WireMockServer` instance to the configuration which allows for better test isolation when running as part of a complex build.  This can typically just be the `WireMockRule` you're using.
 
 ## Getting Started
 Swagwire can be used the same way as any Swagger code generation library.  When setting up your codegen, ensure `swagwire-codegen` is on your classpath and specify the language as `swagwire`.  A Gradle example is present in the `examples` directory.
@@ -95,6 +94,7 @@ All operations are created in the service API class, which can can create like t
         String context = "/pet"
         SwagwiredServiceConfiguration config = SwagwiredServiceConfiguration.builder()
             .basePath(context)
+            .wireMock(wireMockServer)
             .build()
         petApi = new PetApi(new ApiClient().setBasePath("${wireMockUrl()}/pet"))
 ```
@@ -184,7 +184,7 @@ buildscript {
     }
 
     dependencies {
-        compile("com.masabi.swagwire:swagwire-codegen:0.0.26")
+        compile("com.masabi.swagwire:swagwire-codegen:0.0.27")
     }
 }
 
@@ -193,7 +193,7 @@ repositories {
 }
 
 dependencies {
-    testCompile("com.masabi.swagwire:swagwire-core:0.0.26")
+    testCompile("com.masabi.swagwire:swagwire-core:0.0.27")
 }
 ```
 
@@ -204,7 +204,7 @@ Not at all.  The test bindings are completely isolated from your production code
 
 *Can I control JSON serialization/deserialization?*
 
-Yes.  Your API constructor is overloaded to accept a configuration object which can include your own `Gson` instance in.
+Yes.  Your API constructor is accepts a configuration object which can include your own `Gson` instance in.
 
 *Do I have to use Spock/Groovy/Kotlin?*
 
