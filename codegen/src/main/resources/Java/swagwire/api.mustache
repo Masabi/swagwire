@@ -146,7 +146,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
             mappingBuilder.withRequestBody(body);
         {{/bodyParam}}
 
-            return new RemoteOperation<>(mappingBuilder, configuration.getGson(), contentType);
+            return new RemoteOperation<>(mappingBuilder, configuration.getGson(), contentType, configuration.getWireMock());
         }
     {{/operation}}
 {{/operations}}

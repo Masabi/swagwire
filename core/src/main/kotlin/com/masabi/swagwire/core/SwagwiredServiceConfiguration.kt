@@ -1,5 +1,7 @@
 package com.masabi.swagwire.core
 
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.WireMock
 import com.google.gson.Gson
 import net.dongliu.gson.GsonJava8TypeAdapterFactory
 import com.google.gson.GsonBuilder
@@ -10,7 +12,8 @@ data class SwagwiredServiceConfiguration(
     val basePath: String = "",
     val gson: Gson = GsonBuilder()
         .registerTypeAdapterFactory(GsonJava8TypeAdapterFactory())
-        .create()
+        .create(),
+    val wireMock: WireMockServer = WireMockServer()
 ) {
     companion object {
         @JvmStatic

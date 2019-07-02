@@ -1,5 +1,6 @@
 package com.masabi.swagwire.core
 
+import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
@@ -10,7 +11,8 @@ import com.google.gson.Gson
 class RemoteOperation<TYPE>(
         private val mappingBuilder: MappingBuilder,
         private val gson: Gson,
-        private val contentType: String
+        private val contentType: String,
+        private val wireMock: WireMockServer
 ) {
     /**
      * Provides access to the built request.
@@ -22,7 +24,7 @@ class RemoteOperation<TYPE>(
     val request = mappingBuilder
 
     fun respondsWith(responseObject: TYPE) {
-        WireMock.stubFor(mappingBuilder.willReturn(
+        wireMock.givenThat(mappingBuilder.willReturn(
                 defaultResponse()
                         .withBody(responseObject.toJson())
         ))
@@ -35,11 +37,11 @@ class RemoteOperation<TYPE>(
     }
 
     fun respondsWith(response: ResponseDefinitionBuilder) {
-        WireMock.stubFor(mappingBuilder.willReturn(response))
+        wireMock.givenThat(mappingBuilder.willReturn(response))
     }
 
     fun respondsWith(response: RemoteOperationResponse<TYPE>) {
-        WireMock.stubFor(mappingBuilder
+        wireMock.givenThat(mappingBuilder
             .willReturn(response.populateResponse(defaultResponse(), gson)))
     }
 
@@ -48,7 +50,7 @@ class RemoteOperation<TYPE>(
         var currentScenario = Scenario.STARTED
         responses.forEachIndexed { index, response ->
             val nextScenario = "$scenarioName $index"
-            WireMock.stubFor(mappingBuilder
+            wireMock.givenThat(mappingBuilder
                 .inScenario(scenarioName)
                 .whenScenarioStateIs(currentScenario)
                 .willSetStateTo(nextScenario)
@@ -59,7 +61,7 @@ class RemoteOperation<TYPE>(
 
 
     fun succeeds() {
-        WireMock.stubFor(mappingBuilder.willReturn(defaultResponse()))
+        wireMock.givenThat(mappingBuilder.willReturn(defaultResponse()))
     }
 
     /**
@@ -67,14 +69,14 @@ class RemoteOperation<TYPE>(
      */
     @JvmOverloads
     fun wasCalled(noTimes: Int = 1) {
-        WireMock.verify(noTimes, RequestPatternBuilder.like(request.build().request))
+        wireMock.verify(noTimes, RequestPatternBuilder.like(request.build().request))
     }
 
     /**
      * Verifies that the request represented by this operation was not called.
      */
     fun wasNotCalled() {
-        WireMock.verify(0, RequestPatternBuilder.like(request.build().request))
+        wireMock.verify(0, RequestPatternBuilder.like(request.build().request))
     }
 
     internal fun TYPE.toJson(): String = gson.toJson(this)
