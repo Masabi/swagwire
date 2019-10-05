@@ -1,5 +1,6 @@
 package acceptance.dsl
 
+import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.junit.WireMockRule
 
@@ -13,6 +14,10 @@ trait WireMockPerTest {
         return wireMockRule
     }()
 
+    WireMockServer wireMockServer() {
+        return wireMockRule
+    }
+    
     String wireMockUrl() {
         return "http://localhost:${wireMockRule.port()}"
     }
