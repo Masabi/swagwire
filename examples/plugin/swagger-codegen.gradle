@@ -36,5 +36,5 @@ swaggerSources {
 }
 
 compileJava.dependsOn swaggerSources.petstore.code
-sourceSets.main.java.srcDir "${swaggerSources.petstore.code.outputDir.path}/src/main/java"
-sourceSets.test.java.srcDir "${swaggerSources.petstoreTest.code.outputDir.path}/src/main/java"
+sourceSets.main.java.srcDir "${swaggerSources.petstore.code.outputDir.path}/src/main/kotlon"
+sourceSets.test.java.srcDir "${swaggerSources.petstoreTest.code.outputDir.path}/src/main/kotlin"

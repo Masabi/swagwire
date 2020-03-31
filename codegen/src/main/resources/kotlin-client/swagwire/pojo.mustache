@@ -1,0 +1,24 @@
+import com.fasterxml.jackson.annotation.JsonValue;
+
+/**
+ * {{{description}}}
+{{#vars}}
+ * @param {{name}} {{{description}}}
+{{/vars}}
+ */
+data class {{classname}} (
+{{#requiredVars}}
+{{>swagwire/data_class_req_var}}{{^-last}},
+{{/-last}}{{/requiredVars}}{{#hasRequired}}{{#hasOptional}},
+{{/hasOptional}}{{/hasRequired}}{{#optionalVars}}{{>swagwire/data_class_opt_var}}{{^-last}},
+{{/-last}}{{/optionalVars}}
+) {
+{{#hasEnums}}{{#vars}}{{#isEnum}}
+    enum class {{enumClassName}}(@field:JsonValue val value: {{enumValueDataType}}) {
+    {{#enums}}
+        {{{name}}}({{#isEnumString}}"{{/isEnumString}}{{{value}}}{{#isEnumString}}"{{/isEnumString}}){{^-last}},{{/-last}}{{#-last}};{{/-last}}
+    {{/enums}}
+    }
+
+{{/isEnum}}{{/vars}}{{/hasEnums}}
+}
