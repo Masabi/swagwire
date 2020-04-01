@@ -1,0 +1,19 @@
+package {{package}};
+
+import java.util.Objects;
+import java.time.*;
+import java.util.*;
+import java.io.IOException;
+
+import io.swagger.annotations.*;
+import com.google.gson.TypeAdapter;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.JsonAdapter;
+
+{{#models}}
+{{#model}}
+{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>pojo}}{{/isEnum}}
+{{/model}}
+{{/models}}

@@ -1,9 +1,23 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.openapitools:openapi-generator-gradle-plugin:$openApiVersion"
+        classpath "com.masabi.swagwire:swagwire-codegen:$swagwireVersion"
+    }
+}
+
 plugins {
     id 'java'
     id 'idea'
     id 'groovy'
-    id 'org.hidetake.swagger.generator' version "2.9.0"
+    id "org.openapi.generator" version "4.2.3"
 }
+
+ext.GeneratorTask = org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+defaultTasks "clean", "buildPetStore", "buildPetStoreTest"
 
 repositories {
     mavenLocal()
@@ -19,13 +33,12 @@ dependencies {
     // dependencies required to run swagwire
     // swagwire-core has compile time dependencies on the other libraries required
     testCompile(
-        "com.masabi.swagwire:swagwire-core:0.0.28-SNAPSHOT",
+        "com.masabi.swagwire:swagwire-core:$swagwireVersion",
         "com.github.tomakehurst:wiremock:$wiremockVersion",
     )
 
     // dependencies needed for production code generation - these would be part of your standard build
     compile(
-        "io.swagger:swagger-annotations:$swaggerVersion",
         "org.glassfish.jersey.core:jersey-client:$jerseyVersion",
         "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion",
         "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion",
