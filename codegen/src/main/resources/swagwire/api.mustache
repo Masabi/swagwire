@@ -1,13 +1,8 @@
-{{>licenseInfo}}
 package {{package}};
 
 import {{modelPackage}}.*;
-import {{invokerPackage}}.*;
-import static {{invokerPackage}}.ApiUtils.*;
 
-{{#imports}}import {{import}};
-{{/imports}}
-
+import java.time.*;
 import net.dongliu.gson.GsonJava8TypeAdapterFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,13 +14,12 @@ import com.google.gson.GsonBuilder;
     import java.util.Map;
 {{/fullJavaUtil}}
 
-import com.masabi.swagwire.core.RemoteOperation;
-import com.masabi.swagwire.core.SwagwiredServiceConfiguration;
+import com.masabi.swagwire.core.*;
+import static com.masabi.swagwire.core.ApiUtils.*;
 import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.ContentPattern;
 
-{{>generatedAnnotation}}
 {{#operations}}
     public class {{classname}} {
         private SwagwiredServiceConfiguration configuration;
