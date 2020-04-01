@@ -1,13 +1,13 @@
 ![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiSkp3amVvYkpweHB0TktiaGY0bURuRTVCbTgrZEJzY1V2Q1lOYXEwZjFPV2JUWkVkNDF0RGRYSU5VZkFkdVJNbnZ0MGxVK3Qzd0lGNjdCQmJ5YXdTR0R3PSIsIml2UGFyYW1ldGVyU3BlYyI6InpvZWR5RDJGdlF1VTJraVIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
-Latest version 0.0.26
+Latest version 1.0.0-openapi3
 
 # Swagwire
 
 
 ## Introduction
 
-Swagwire is a project that combines [Swagger](https://swagger.io/) and [Wiremock](http://wiremock.org/) to ease the burden when writing tests against APIs.
+Swagwire is a project that combines [OpenApi 3](https://swagger.io/) and [Wiremock](http://wiremock.org/) to ease the burden when writing tests against APIs.
 
 Wiremock is that de facto tool for writing test code that goes over the wire, but writing tests is not only cumbersome, it requires knowledge of how to interact with the API you're working with.  Not only does this open you up to error, but offers no guarantees that a passing test means your integration is correct.  
 
@@ -65,12 +65,12 @@ Swagwire helps to overcome this by generating code stubs for the Wiremock bindin
 
 
 
-Note that here our code is focused around domain objects instead of HTTP requests.  Behind the scenes this has done exactly the same as the previous test, but with the safety that everything is done according to the swagger spec.
+Note that here our code is focused around domain objects instead of HTTP requests.  Behind the scenes this has done exactly the same as the previous test, but with the safety that everything is done according to the openapi spec.
 
 As of version `0.0.27`, you can provide a `WireMockServer` instance to the configuration which allows for better test isolation when running as part of a complex build.  This can typically just be the `WireMockRule` you're using.
 
 ## Getting Started
-Swagwire can be used the same way as any Swagger code generation library.  When setting up your codegen, ensure `swagwire-codegen` is on your classpath and specify the language as `swagwire`.  A Gradle example is present in the `examples` directory.
+Swagwire can be used the same way as any openapi code generation library.  When setting up your codegen, ensure `swagwire-codegen` is on your classpath and specify the language as `swagwire`.  A Gradle example is present in the `examples` directory.
 In addition, the `swagwire-core` jar is required to be on your test compile classpath.  The provides the necessary libs and dependencies required for operation.
 
 Swagwire will generate a Service API class for your service and corresponding data objects.  For example, for the Pet store example you end up with the following files:
@@ -102,7 +102,7 @@ All operations are created in the service API class, which can can create like t
 This creates a Swagwire API for the `Pet` set of operations mounted at the `/pet` context.
 
 ### Specify Requests
-Requests are setup by calling the appropriate api method on your api class.  These map directly to the operations specified in your swagger spec.  All parameters will be automatically mapped to their correct location - path params, query params etc.  When a body is provided this can either be a generated domain object or a `ContentPattern<String>`.  The latter is provided for flexibility, for example only matching part of the body.
+Requests are setup by calling the appropriate api method on your api class.  These map directly to the operations specified in your openapi spec.  All parameters will be automatically mapped to their correct location - path params, query params etc.  When a body is provided this can either be a generated domain object or a `ContentPattern<String>`.  The latter is provided for flexibility, for example only matching part of the body.
 
 If you need to manipulate the request in a way Swagwire doesn't support directly, the `RemoteOperation` allows direct access to the current `MappingBuilder`.
 
@@ -113,7 +113,7 @@ When setting up an expectation you have to inform Swagwire how you want it to be
     api.getPetById(1234L).respondsWith(pet)
 ```
 
-If the API doesn't have a response object, you can inform Swagger to return the correct code with no body:
+If the API doesn't have a response object, you can inform Swagwire to return the correct code with no body:
 
 ```
     api.deletePet(1234L, "apiKey").succeeds()
@@ -184,7 +184,7 @@ buildscript {
     }
 
     dependencies {
-        compile("com.masabi.swagwire:swagwire-codegen:0.0.27")
+        compile("com.masabi.swagwire:swagwire-codegen:1.0.0-openapi3")
     }
 }
 
@@ -193,12 +193,12 @@ repositories {
 }
 
 dependencies {
-    testCompile("com.masabi.swagwire:swagwire-core:0.0.27")
+    testCompile("com.masabi.swagwire:swagwire-core:1.0.0-openapi3")
 }
 ```
 
 ## FAQs
-*Do I have to be using Swagger codegen in production to use this?*
+*Do I have to be using Swagger/openapi codegen in production to use this?*
 
 Not at all.  The test bindings are completely isolated from your production code
 
