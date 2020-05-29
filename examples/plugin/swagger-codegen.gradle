@@ -1,9 +1,16 @@
 apply plugin: 'org.openapi.generator'
 
+String generatedOutputDir = "$buildDir/generated/swagger-code"
+String generatedSrcOutputDir = "${generatedOutputDir}/src/main/java"
+String generatedTestOutputDir = "$buildDir/generated/swagger-test-code"
+String generatedTestSrcOutputDir = "${generatedTestOutputDir}/src/main/java"
+
 task buildPetStore(type: ext.GeneratorTask) {
     inputSpec = "${projectDir}/src/main/resources/petstore.json"
     generatorName = "java"
-    outputDir = "$buildDir/generated/swagger-code"
+    outputDir = generatedOutputDir
+    apiPackage = "io.swagger.client.api"
+    modelPackage = "io.swagger.client.model"
     library = "jersey2"
     configOptions = [
         java8Mode: "true",
@@ -14,13 +21,14 @@ task buildPetStore(type: ext.GeneratorTask) {
 task buildPetStoreTest(type: ext.GeneratorTask) {
     inputSpec = "${projectDir}/src/main/resources/petstore.json"
     generatorName = "swagwire"
-    outputDir = "$buildDir/generated/swagger-test-code"
-    packageName = "com.masabi.rapier.other"
+    outputDir = generatedTestOutputDir
+    apiPackage = "io.swagger.client.api"
+    modelPackage = "io.swagger.client.model"
     configOptions = [
         dateLibrary: 'java8'
     ]
 }
 
 compileJava.dependsOn buildPetStore, buildPetStoreTest
-sourceSets.main.java.srcDir "${buildPetStore.outputDir}/src/main/java"
-sourceSets.test.java.srcDir "${buildPetStoreTest.outputDir}/src/main/java"
+sourceSets.main.java.srcDirs += generatedSrcOutputDir
+sourceSets.test.java.srcDirs += generatedTestSrcOutputDir

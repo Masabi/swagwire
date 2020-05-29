@@ -37,12 +37,17 @@ dependencies {
         "com.github.tomakehurst:wiremock:$wiremockVersion",
     )
 
+    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+
     // dependencies needed for production code generation - these would be part of your standard build
     compile(
         "org.glassfish.jersey.core:jersey-client:$jerseyVersion",
         "org.glassfish.jersey.media:jersey-media-multipart:$jerseyVersion",
         "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion",
         "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
+        "org.openapitools:jackson-databind-nullable:$jacksonNullableVersion",
+        "com.google.code.findbugs:jsr305:$findbugsVersion",
+        "io.swagger:swagger-annotations:$swaggerAnnotationsVersion"
     )
 
     testRuntime(
