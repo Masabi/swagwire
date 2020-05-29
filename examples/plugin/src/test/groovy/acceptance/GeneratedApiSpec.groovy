@@ -35,15 +35,15 @@ class GeneratedApiSpec extends Specification implements WireMockPerTest, PetApiD
     def "can POST a new object with minimal information"() {
         given:
             SwagWiredPet newPet = new SwagWiredPet()
-                .id(634L)
-                .status(SwagWiredPet.StatusEnum.AVAILABLE)
+                .name("fido")
+                .photoUrls(["example.com"])
 
             remotePetApi.addPet(newPet).succeeds()
 
         expect:
             Pet newActualPet = new Pet()
-                .id(634L)
-                .status(Pet.StatusEnum.AVAILABLE)
+                .name("fido")
+                .photoUrls(["example.com"])
             petApi.addPet(newActualPet)
     }
 

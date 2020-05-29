@@ -35,6 +35,7 @@ dependencies {
     testCompile(
         "com.masabi.swagwire:swagwire-core:$swagwireVersion",
         "com.github.tomakehurst:wiremock:$wiremockVersion",
+        "ch.qos.logback:logback-classic:$logbackVersion",
     )
 
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
