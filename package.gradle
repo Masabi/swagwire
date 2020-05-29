@@ -68,6 +68,14 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
         }
+
+        localTest(MavenPublication) {
+            version = '0.0.1-SNAPSHOT'
+
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+        }
     }
     repositories {
         maven {
