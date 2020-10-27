@@ -81,7 +81,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
 
 
         String {{localVariablePrefix}}localVarPath = configuration.getBasePath() + "{{{path}}}"{{#pathParams}}
-            .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}{{{paramName}}}.toString()){{/pathParams}};
+            .replaceAll("\\{" + "{{baseName}}" + "\\}", escapeString({{localVariablePrefix}}{{{paramName}}}.toString())){{/pathParams}};
 
         final String[] {{localVariablePrefix}}localVarAccepts = {
             {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}}
