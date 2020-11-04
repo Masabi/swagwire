@@ -11,6 +11,8 @@ import io.swagger.client.ApiException
 import io.swagger.client.model.SwagWiredPet
 import spock.lang.Specification
 
+import javax.ws.rs.ProcessingException
+
 import static com.github.tomakehurst.wiremock.http.Fault.MALFORMED_RESPONSE_CHUNK
 
 class ResponseSpec extends Specification implements WireMockPerTest, PetApiDsl, PetsDsl {
@@ -41,7 +43,7 @@ class ResponseSpec extends Specification implements WireMockPerTest, PetApiDsl, 
             fetchingPet()
 
         then:
-            thrown(ApiException)
+            thrown(ProcessingException)
     }
 
     def "can respond multiple times"() {

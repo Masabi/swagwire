@@ -1,4 +1,4 @@
 cd ../../ && \
-./gradlew compileJava publishToMavenLocal && \
+./gradlew compileJava publishLocalTestPublicationToMavenLocal && \
 cd - && \
 ../../gradlew --stop && ../../gradlew --stacktrace
