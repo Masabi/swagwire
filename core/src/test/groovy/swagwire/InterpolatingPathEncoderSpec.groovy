@@ -1,11 +1,11 @@
 package swagwire
 
-import com.masabi.swagwire.core.InterpolatingPathBuilder
+import com.masabi.swagwire.core.InterpolatingPathEncoder
 import com.masabi.swagwire.core.NoEncodingEncoder
 import com.masabi.swagwire.core.UrlValueEncoder
 import spock.lang.Specification
 
-class InterpolatingPathBuilderSpec extends Specification {
+class InterpolatingPathEncoderSpec extends Specification {
     String path = ""
     Map<String, String> pathParams = [:]
     UrlValueEncoder encoder = NoEncodingEncoder.INSTANCE
@@ -41,7 +41,7 @@ class InterpolatingPathBuilderSpec extends Specification {
     }
 
     String builtPath() {
-        return new InterpolatingPathBuilder(encoder).buildPath(path, pathParams)
+        return new InterpolatingPathEncoder(encoder).buildPath(path, pathParams)
     }
 
     void pathParamsOf(Map<String, String> pathParams) {

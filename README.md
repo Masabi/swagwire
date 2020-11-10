@@ -1,6 +1,6 @@
 ![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiSkp3amVvYkpweHB0TktiaGY0bURuRTVCbTgrZEJzY1V2Q1lOYXEwZjFPV2JUWkVkNDF0RGRYSU5VZkFkdVJNbnZ0MGxVK3Qzd0lGNjdCQmJ5YXdTR0R3PSIsIml2UGFyYW1ldGVyU3BlYyI6InpvZWR5RDJGdlF1VTJraVIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
-Latest version 1.0.0-openapi3
+Latest version 1.0.1-openapi3
 
 # Swagwire
 
@@ -106,6 +106,18 @@ Requests are setup by calling the appropriate api method on your api class.  The
 
 If you need to manipulate the request in a way Swagwire doesn't support directly, the `RemoteOperation` allows direct access to the current `MappingBuilder`.
 
+#### Encoding Params
+By default, Swagwire will not URL encode parameters that are part of the path.  This can be enabled through configuration with a default encoder being provided that uses the JDK build in `URLEncoder`.
+
+Setting up using the default `URLEncoder`:
+```
+SwagWiredServiceConfiguration configuration = SwagWiredServiceConfiguration.builder()
+    .pathBuilder(new InterpolatingPathEncoder(UrlEncoderBasedUrlValueEncoder.INSTANCE))
+    .build()
+```
+
+If this doesn't satisfy your needs you can provide your own `PathEncoder`.  If you just want to provide a different mechanism for encoding the invidivual parts, you can use the `InterpolatingPathEncoder` and just provide your own implementation of `UrlValueEncoder`.
+
 ### Response Configuration
 When setting up an expectation you have to inform Swagwire how you want it to be handled, e.g.
 
@@ -184,7 +196,7 @@ buildscript {
     }
 
     dependencies {
-        compile("com.masabi.swagwire:swagwire-codegen:1.0.0-openapi3")
+        compile("com.masabi.swagwire:swagwire-codegen:1.0.1-openapi3")
     }
 }
 
@@ -193,7 +205,7 @@ repositories {
 }
 
 dependencies {
-    testCompile("com.masabi.swagwire:swagwire-core:1.0.0-openapi3")
+    testCompile("com.masabi.swagwire:swagwire-core:1.0.1-openapi3")
 }
 ```
 
