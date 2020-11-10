@@ -78,8 +78,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         {{/pathParams}} }};
 
         String {{localVariablePrefix}}localVarPath = configuration.getPathBuilder().buildPath(
-            configuration.getBasePath(),
-            "{{{path}}}",
+            configuration.getBasePath() + "{{{path}}}",
             pathParams
         );
 

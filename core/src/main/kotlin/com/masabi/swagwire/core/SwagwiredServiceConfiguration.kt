@@ -13,7 +13,7 @@ data class SwagwiredServiceConfiguration(
         .registerTypeAdapterFactory(GsonJava8TypeAdapterFactory())
         .create(),
     val wireMock: WireMockServer = WireMockServer(),
-    val pathBuilder: PathBuilder = UrlEncoderBasedPathBuilder()
+    val pathBuilder: PathBuilder = InterpolatingPathBuilder(encoder = NoEncodingEncoder)
 
 ) {
     companion object {
