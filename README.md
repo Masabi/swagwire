@@ -112,7 +112,7 @@ By default, Swagwire will not URL encode parameters that are part of the path.  
 Setting up using the default `URLEncoder`:
 ```
 SwagWiredServiceConfiguration configuration = SwagWiredServiceConfiguration.builder()
-    .pathBuilder(new InterpolatingPathEncoder(UrlEncoderBasedUrlValueEncoder.INSTANCE))
+    .pathEncoder(new InterpolatingPathEncoder(UrlEncoderBasedUrlValueEncoder.INSTANCE))
     .build()
 ```
 
