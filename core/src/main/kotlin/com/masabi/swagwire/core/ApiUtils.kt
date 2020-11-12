@@ -1,20 +1,9 @@
 package com.masabi.swagwire.core
 
-import java.io.UnsupportedEncodingException
-import java.net.URLEncoder
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 object ApiUtils {
-    @JvmStatic
-    fun escapeString(str: String): String {
-        return try {
-            URLEncoder.encode(str, "utf8").replace("\\+".toRegex(), "%20")
-        } catch (e: UnsupportedEncodingException) {
-            str
-        }
-    }
-
     @JvmStatic
     fun selectHeaderAccept(accepts: Array<String>): String {
         if (accepts.isEmpty()) { // Nothing was specified to presume it's json we want

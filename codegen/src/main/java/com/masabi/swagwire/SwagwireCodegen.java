@@ -1,7 +1,6 @@
 package com.masabi.swagwire;
 
 import org.openapitools.codegen.CodegenType;
-import org.openapitools.codegen.SupportingFile;
 import org.openapitools.codegen.languages.AbstractJavaCodegen;
 
 public class SwagwireCodegen extends AbstractJavaCodegen {

@@ -64,13 +64,6 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         {{/externalDocs}}
         */
 
-        //
-        //
-        // I bet the final comma before the body on this doesn't work when there's only a single argument
-        //
-        // We should have tests or something for that
-
-
         public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}}{{/isBodyParam}}{{#isBodyParam}}ContentPattern<String>{{/isBodyParam}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
@@ -80,45 +73,18 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         {{/required}}{{/allParams}}
         // create path and map variables
 
+        Map<String, String> pathParams = new HashMap() {{ {{#pathParams}}
+            put("{{baseName}}", {{{paramName}}}.toString());
+        {{/pathParams}} }};
 
-        String {{localVariablePrefix}}localVarPath = configuration.getBasePath() + "{{{path}}}"{{#pathParams}}
-            .replaceAll("\\{" + "{{baseName}}" + "\\}", {{localVariablePrefix}}{{{paramName}}}.toString()){{/pathParams}};
+        String {{localVariablePrefix}}localVarPath = configuration.getPathEncoder().buildPath(
+            configuration.getBasePath() + "{{{path}}}",
+            pathParams
+        );
 
         final String[] {{localVariablePrefix}}localVarAccepts = {
             {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}}
         };
-/*
-        final String {{localVariablePrefix}}localVarAccept = {{localVariablePrefix}}selectHeaderAccept({{localVariablePrefix}}localVarAccepts);
-
-        // query params
-        {{javaUtilPrefix}}List<Pair> {{localVariablePrefix}}localVarQueryParams = new {{javaUtilPrefix}}ArrayList<Pair>();
-        {{javaUtilPrefix}}List<Pair> {{localVariablePrefix}}localVarCollectionQueryParams = new {{javaUtilPrefix}}ArrayList<Pair>();
-        {{javaUtilPrefix}}Map<String, String> {{localVariablePrefix}}localVarHeaderParams = new {{javaUtilPrefix}}HashMap<String, String>();
-        {{javaUtilPrefix}}Map<String, Object> {{localVariablePrefix}}localVarFormParams = new {{javaUtilPrefix}}HashMap<String, Object>();
-
-        {{#queryParams}}
-            {{localVariablePrefix}}{{#collectionFormat}}localVarCollectionQueryParams.addAll({{localVariablePrefix}}apiClient.parameterToPairs("{{{collectionFormat}}}", {{/collectionFormat}}{{^collectionFormat}}localVarQueryParams.addAll({{localVariablePrefix}}apiClient.parameterToPair({{/collectionFormat}}"{{baseName}}", {{paramName}}));
-        {{/queryParams}}
-
-        {{#formParams}}if ({{paramName}} != null)
-        {{localVariablePrefix}}localVarFormParams.put("{{baseName}}", {{paramName}});
-        {{/formParams}}
-
-
-            final String[] {{localVariablePrefix}}localVarContentTypes = {
-        {{#consumes}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/consumes}}
-            };
-            final String {{localVariablePrefix}}localVarContentType = {{localVariablePrefix}}apiClient.selectHeaderContentType({{localVariablePrefix}}localVarContentTypes);
-
-            String[] {{localVariablePrefix}}localVarAuthNames = new String[] { {{#authMethods}}"{{name}}"{{#hasMore}}, {{/hasMore}}{{/authMethods}} };
-
-        {{#returnType}}
-                GenericType<{{{returnType}}}> {{localVariablePrefix}}localVarReturnType = new GenericType<{{{returnType}}}>() {};
-                return {{localVariablePrefix}}apiClient.invokeAPI({{localVariablePrefix}}localVarPath, "{{httpMethod}}", {{localVariablePrefix}}localVarQueryParams, {{localVariablePrefix}}localVarCollectionQueryParams, {{localVariablePrefix}}localVarPostBody, {{localVariablePrefix}}localVarHeaderParams, {{localVariablePrefix}}localVarFormParams, {{localVariablePrefix}}localVarAccept, {{localVariablePrefix}}localVarContentType, {{localVariablePrefix}}localVarAuthNames, {{localVariablePrefix}}localVarReturnType);
-        {{/returnType}}
-        {{^returnType}}
-            {{localVariablePrefix}}apiClient.invokeAPI({{localVariablePrefix}}localVarPath, "{{httpMethod}}", {{localVariablePrefix}}localVarQueryParams, {{localVariablePrefix}}localVarCollectionQueryParams, {{localVariablePrefix}}localVarPostBody, {{localVariablePrefix}}localVarHeaderParams, {{localVariablePrefix}}localVarFormParams, {{localVariablePrefix}}localVarAccept, {{localVariablePrefix}}localVarContentType, {{localVariablePrefix}}localVarAuthNames, null);
-        {{/returnType}}*/
 
         // TODO this only works for Json right now - to do something else we need
         // to handle the serialization further down

@@ -6,4 +6,8 @@ dependencies {
         "com.google.code.gson:gson:$gsonVersion",
         "net.dongliu:gson-java8-datatype:1.1.0",
     )
+
+    testCompile(
+        "org.spockframework:spock-core:$spockVersion",
+    )
 }
