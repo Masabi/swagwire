@@ -1,6 +1,6 @@
 ![Build Status](https://codebuild.eu-west-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiSkp3amVvYkpweHB0TktiaGY0bURuRTVCbTgrZEJzY1V2Q1lOYXEwZjFPV2JUWkVkNDF0RGRYSU5VZkFkdVJNbnZ0MGxVK3Qzd0lGNjdCQmJ5YXdTR0R3PSIsIml2UGFyYW1ldGVyU3BlYyI6InpvZWR5RDJGdlF1VTJraVIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
 
-Latest version 1.0.2-openapi3
+Latest version 1.0.3-openapi3
 
 # Swagwire
 
@@ -196,7 +196,7 @@ buildscript {
     }
 
     dependencies {
-        compile("com.masabi.swagwire:swagwire-codegen:1.0.2-openapi3")
+        compile("com.masabi.swagwire:swagwire-codegen:1.0.3-openapi3")
     }
 }
 
@@ -205,7 +205,7 @@ repositories {
 }
 
 dependencies {
-    testCompile("com.masabi.swagwire:swagwire-core:1.0.2-openapi3")
+    testCompile("com.masabi.swagwire:swagwire-core:1.0.3-openapi3")
 }
 ```
 
