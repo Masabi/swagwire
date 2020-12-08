@@ -38,7 +38,7 @@
         "parameters": [
           {
             "in": "body",
-            "name": "body",
+            "name": "request",
             "description": "Pet object that needs to be added to the store",
             "required": false,
             "schema": {
