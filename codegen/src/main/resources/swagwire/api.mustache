@@ -45,25 +45,6 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         }
         {{/bodyParam}}
 
-        /**
-        * {{summary}}
-        * {{notes}}
-        {{#allParams}}
-            * @param {{paramName}} {{description}}{{#required}} (required){{/required}}{{^required}} (optional{{#defaultValue}}, default to {{{.}}}{{/defaultValue}}){{/required}}
-        {{/allParams}}
-        {{#returnType}}
-            * @return {{returnType}}
-        {{/returnType}}
-        * @throws ApiException if fails to make API call
-        {{#isDeprecated}}
-            * @Deprecated
-        {{/isDeprecated}}
-        {{#externalDocs}}
-            * {{description}}
-            * @see <a href="{{url}}">{{summary}} Documentation</a>
-        {{/externalDocs}}
-        */
-
         public {{#returnType}}RemoteOperation<{{{returnType}}}> {{/returnType}}{{^returnType}}RemoteOperation<Void> {{/returnType}}{{operationId}}({{#allParams}}{{^isBodyParam}}{{{dataType}}}{{/isBodyParam}}{{#isBodyParam}}ContentPattern<String>{{/isBodyParam}} {{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}) {
         {{#allParams}}{{#required}}
             // verify the required parameter '{{paramName}}' is set
@@ -93,10 +74,6 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         // wiremock we're doing the inverse
         final String contentType = selectHeaderAccept(localVarAccepts);
 
-        /**
-         * This is probably going to be different depending on the operation being done -
-         * maybe use the HTTP verb to figure it out
-         */
         MappingBuilder mappingBuilder = WireMock.request("{{httpMethod}}", WireMock.urlPathMatching(localVarPath));
         {{#headerParams}}if ({{paramName}} != null) {
             mappingBuilder
@@ -104,7 +81,7 @@ import com.github.tomakehurst.wiremock.matching.ContentPattern;
         }
         {{/headerParams}}
         {{#bodyParam}}
-            mappingBuilder.withRequestBody(body);
+            mappingBuilder.withRequestBody({{paramName}});
         {{/bodyParam}}
 
             return new RemoteOperation<>(mappingBuilder, configuration.getGson(), contentType, configuration.getWireMock());
