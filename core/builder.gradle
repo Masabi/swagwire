@@ -12,7 +12,7 @@ dependencies {
 
 idea {
     module {
-        sourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
-        generatedSourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
+        sourceDirs += files("${project.buildDir}/generated/source/kapt/main", "${project.buildDir}/generated/source/kaptKotlin/main")
+        generatedSourceDirs += files("${project.buildDir}/generated/source/kapt/main", "${project.buildDir}/generated/source/kaptKotlin/main")
     }
 }
