@@ -7,7 +7,8 @@ This is an example project showing how to make use of Swagwire using Gradle.
 In order the view the project run the following:
 
 ```
-$ ./gradlew generateSwaggerCode idea
+$ ./build.sh
+$ ./gradlew idea
 ```
 
 This will generate code for both the production and swagwire test code into the `build/` directory.  This will also generate an IDEA project you can open directly to view the code.
