@@ -50,7 +50,6 @@ public class SwagwireCodegen extends AbstractJavaCodegen {
         super.processOpts();
 
         this.additionalProperties.put("gson", "true");
-        setJava8Mode(true);
         setDateLibrary("java8");
     }
 }
