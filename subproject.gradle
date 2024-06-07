@@ -1,22 +1,19 @@
 apply plugin: 'groovy'
 apply from: '../package.gradle'
 
-project.ext {
-	jvmVersion = 1.8
-}
-
-sourceCompatibility = project.jvmVersion
-targetCompatibility = project.jvmVersion
-
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 [compileJava, compileTestJava]*.options*.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 
 repositories {
-	jcenter()
+    gradlePluginPortal()
+    mavenLocal()
+    maven { url 'https://artifactory.masabi.com/artifactory/libs-release' }
+    maven { url 'https://artifactory.masabi.com/artifactory/libs-release-local' }
+    maven { url 'https://artifactory.masabi.com/artifactory/libs-snapshot-local' }
 }
 
 dependencies {
-	testCompile(
-			"org.spockframework:spock-core:$spockVersion",
-	)
+    testImplementation(
+        "org.spockframework:spock-core:$spockVersion",
+    )
 }

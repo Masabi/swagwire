@@ -1,12 +1,12 @@
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    compile (
-            "com.masabi.kotlinbuilder:masabi-kotlinbuilder:$kotlinBuilderVersion"
+    api(
+        "com.masabi.kotlinbuilder:masabi-kotlinbuilder:$kotlinBuilderVersion"
     )
 
     kapt(
-            "com.masabi.kotlinbuilder:masabi-kotlinbuilder-processor:$kotlinBuilderVersion"
+        "com.masabi.kotlinbuilder:masabi-kotlinbuilder-processor:$kotlinBuilderVersion"
     )
 }
 

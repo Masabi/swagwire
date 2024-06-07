@@ -1,5 +1,5 @@
 dependencies {
-    compile (
+    api(
         "com.github.tomakehurst:wiremock:$wiremockVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
@@ -7,7 +7,7 @@ dependencies {
         "net.dongliu:gson-java8-datatype:1.1.0",
     )
 
-    testCompile(
+    testImplementation(
         "org.spockframework:spock-core:$spockVersion",
     )
 }
