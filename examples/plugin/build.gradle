@@ -20,11 +20,8 @@ ext.GeneratorTask = org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 defaultTasks "clean", "buildPetStore", "buildPetStoreTest"
 
 repositories {
-    gradlePluginPortal()
     mavenLocal()
-    maven { url 'https://artifactory.masabi.com/artifactory/libs-release' }
-    maven { url 'https://artifactory.masabi.com/artifactory/libs-release-local' }
-    maven { url 'https://artifactory.masabi.com/artifactory/libs-snapshot-local' }
+    mavenCentral()
 }
 
 dependencies {

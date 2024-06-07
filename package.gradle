@@ -4,7 +4,7 @@ apply from: '../version.properties'
 
 group = "com.masabi.swagwire"
 
-task javadocJar(type: Jar) {
+tasks.register('javadocJar', Jar) {
     from javadoc
     archiveClassifier = 'javadoc'
 }
@@ -15,7 +15,7 @@ javadoc {
     }
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     from sourceSets.main.allSource
     archiveClassifier = 'sources'
 }

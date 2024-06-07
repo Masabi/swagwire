@@ -1,7 +1,7 @@
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-    api(
+    implementation(
         "com.masabi.kotlinbuilder:masabi-kotlinbuilder:$kotlinBuilderVersion"
     )
 

@@ -5,11 +5,8 @@ apply from: '../package.gradle'
 [compileJava, compileTestJava]*.options*.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 
 repositories {
-    gradlePluginPortal()
     mavenLocal()
-    maven { url 'https://artifactory.masabi.com/artifactory/libs-release' }
-    maven { url 'https://artifactory.masabi.com/artifactory/libs-release-local' }
-    maven { url 'https://artifactory.masabi.com/artifactory/libs-snapshot-local' }
+    mavenCentral()
 }
 
 dependencies {
