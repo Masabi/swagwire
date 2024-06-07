@@ -5,7 +5,6 @@ apply from: '../package.gradle'
 [compileJava, compileTestJava]*.options*.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
