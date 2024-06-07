@@ -205,7 +205,7 @@ repositories {
 }
 
 dependencies {
-    testCompile("com.masabi.swagwire:swagwire-core:1.0.6-openapi3")
+    testImplementation("com.masabi.swagwire:swagwire-core:1.0.6-openapi3")
 }
 ```
 

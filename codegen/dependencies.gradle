@@ -1,5 +1,5 @@
 dependencies {
-    compile (
+    implementation(
         "org.openapitools:openapi-generator:$openApiVersion",
         "org.openapitools:openapi-generator-cli:$openApiVersion"
     )
