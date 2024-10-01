@@ -1,6 +1,6 @@
 dependencies {
     api(
-        "com.github.tomakehurst:wiremock:$wiremockVersion",
+        "org.wiremock:wiremock:$wiremockVersion",
         "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion",
         "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion",
         "com.google.code.gson:gson:$gsonVersion",

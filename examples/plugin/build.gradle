@@ -13,7 +13,7 @@ plugins {
     id 'java'
     id 'idea'
     id 'groovy'
-    id "org.openapi.generator" version "4.2.3"
+    id "org.openapi.generator" version "$openApiVersion"
 }
 
 ext.GeneratorTask = org.openapitools.generator.gradle.plugin.tasks.GenerateTask
@@ -33,7 +33,7 @@ dependencies {
     // swagwire-core has compile time dependencies on the other libraries required
     testImplementation(
         "com.masabi.swagwire:swagwire-core:$swagwireVersion",
-        "com.github.tomakehurst:wiremock:$wiremockVersion",
+        "org.wiremock:wiremock:$wiremockVersion",
         "ch.qos.logback:logback-classic:$logbackVersion",
     )
 
@@ -46,12 +46,12 @@ dependencies {
         "org.glassfish.jersey.media:jersey-media-json-jackson:$jerseyVersion",
         "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion",
         "org.openapitools:jackson-databind-nullable:$jacksonNullableVersion",
-        "com.google.code.findbugs:jsr305:$findbugsVersion",
+        "com.github.spotbugs:spotbugs-annotations:$spotbugsVersion",
         "io.swagger.core.v3:swagger-annotations:$swaggerAnnotationsVersion"
     )
 
     testImplementation(
-        "javax.xml.bind:jaxb-api:2.3.1"
+        "jakarta.xml.bind:jakarta.xml.bind-api:$jakartaVersion"
     )
 }
 
