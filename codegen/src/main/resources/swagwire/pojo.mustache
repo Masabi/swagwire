@@ -1,7 +1,7 @@
 /**
  * {{#description}}{{.}}{{/description}}{{^description}}{{classname}}{{/description}}
  */{{#description}}
-@ApiModel(description = "{{{description}}}"){{/description}}
+@Schema(description = "{{{description}}}"){{/description}}
 public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}} {
   public static final com.github.tomakehurst.wiremock.matching.StringValuePattern ANY = new com.github.tomakehurst.wiremock.matching.AnythingPattern();
 
@@ -77,7 +77,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}} {{/parent}} {
   {{/maximum}}
    * @return {{name}}
   **/
-{{#useBeanValidation}}{{>beanValidation}}{{/useBeanValidation}}  @ApiModelProperty({{#example}}example = "{{{example}}}", {{/example}}{{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
+{{#useBeanValidation}}{{>beanValidation}}{{/useBeanValidation}}  @Schema({{#example}}example = "{{{example}}}", {{/example}}{{#required}}required = {{required}}, {{/required}}description = "{{{description}}}")
 {{#vendorExtensions.extraAnnotation}}
   {{{vendorExtensions.extraAnnotation}}}
 {{/vendorExtensions.extraAnnotation}}
