@@ -7,6 +7,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.matching.RequestPatternBuilder
 import com.github.tomakehurst.wiremock.stubbing.Scenario
 import com.google.gson.Gson
+import java.util.UUID.randomUUID
 
 class RemoteOperation<TYPE>(
         private val mappingBuilder: MappingBuilder,
@@ -17,8 +18,9 @@ class RemoteOperation<TYPE>(
     /**
      * Provides access to the built request.
      * <p>
-     * This can be useful when setting up post verification checks but you still want swagwire to construct requests or
-     * for manipulating the response further, e.g. setting up scenarios.
+     * This can be useful when setting up post verification checks, but you still want swagwire
+     * to construct requests or for manipulating the response further, e.g. setting up scenarios.
+     * If you stub with multiple responses then only the last stub will be available.
      * <p>
      */
     val request = mappingBuilder
@@ -50,11 +52,14 @@ class RemoteOperation<TYPE>(
         var currentScenario = Scenario.STARTED
         responses.forEachIndexed { index, response ->
             val nextScenario = "$scenarioName $index"
-            wireMock.givenThat(mappingBuilder
-                .inScenario(scenarioName)
-                .whenScenarioStateIs(currentScenario)
-                .willSetStateTo(nextScenario)
-                .willReturn(response.populateResponse(defaultResponse(), gson)))
+            wireMock.givenThat(
+                mappingBuilder
+                    .inScenario(scenarioName)
+                    .withId(randomUUID())
+                    .whenScenarioStateIs(currentScenario)
+                    .willSetStateTo(nextScenario)
+                    .willReturn(response.populateResponse(defaultResponse(), gson))
+            )
             currentScenario = nextScenario
         }
     }
